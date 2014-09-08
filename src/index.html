@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html ng-app="ngBoilerplate" ng-controller="AppCtrl">
+<html ng-app="app" ng-controller="AppCtrl">
   <head>
     <title ng-bind="pageTitle"></title>
 
     <!-- social media tags -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@don_mccurdy">
-    <meta name="twitter:title" content="ngBoilerplate">
-    <meta name="twitter:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
-    <meta name="twitter:creator" content="@joshdmiller">
+    <meta name="twitter:title" content="TweetCupboard">
+    <meta name="twitter:description" content="Web application for organizingn your Twitter lists.">
+    <meta name="twitter:creator" content="@don_mccurdy">
     <meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
-    <meta property="og:title" content="ngBoilerplate" />
+    <meta property="og:title" content="TweetCupboard" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://bit.ly/ngBoilerplate" />
+    <meta property="og:url" content="http://www.donmccurdy.com" />
     <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
-    <meta property="og:description" content="Non-Trivial AngularJS Made Easy: Everything you need to kickstart AngularJS projects: a best-practice directory structure, an intelligent build system, and the best web design libraries around.">
+    <meta property="og:description" content="Web application for organizingn your Twitter lists.">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -24,10 +24,13 @@
     <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
     <link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
 
+    <!-- jQuery (dependency for OAuth.io, regrettably) -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
     <script type="text/javascript" src="<%= file %>"></script><% }); %>
   </head>
-  <body>
+  <body keypress-events>
     <div class="container">
       <div class="navbar navbar-default">
         <div class="navbar-header">
@@ -39,7 +42,7 @@
             <span class="icon-bar"></span>
           </button>
           <div class="navbar-brand">
-            ngbp
+            TweetCupboard
             <small>
               <a href="http://github.com/ngbp/ngbp/blob/v<%= version %>-release/CHANGELOG.md">
                 v<%= version %>
@@ -58,27 +61,41 @@
             <li ui-sref-active="active">
               <a href ui-sref="about">
                 <i class="fa fa-info-circle"></i>
-                What is it?
+                About
               </a>
             </li>
             <li>
-              <a href="https://github.com/ngbp/ngbp#readme">
-                <i class="fa fa-book"></i>
-                Read the Docs
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/ngbp/ngbp">
-                <i class="fa fa-github-alt"></i>
-                Github
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/ngbp/ngbp/issues">
+              <a href="https://github.com/donmccurdy/tweetcupboard/issues">
                 <i class="fa fa-comments"></i>
                 Support
               </a>
             </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+
+            <li ng-hide="logged_in">
+              <a href="#" ng-click="connectButton()">
+                <i class="fa fa-sign-in"></i>
+                Sign In
+              </a>
+            </li>
+            <li ng-show="user.id">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{user.name}} <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                 <li>
+                  <a href="#" ng-click="signOut()"> 
+                    <i class="fa fa-sign-out"></i>
+                    Sign Out
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <img class="img-circle navbar-brand avatar"
+              ng-show="user.id"
+              ng-src="{{user.profile_image_url_https}}"
+              alt="profile image">
           </ul>
         </div>
       </div>

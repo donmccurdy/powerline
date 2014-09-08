@@ -42,11 +42,11 @@ submodules that need them to ensure proper dependency handling. These are
 app-wide dependencies that are required to assemble your app.
 
 ```js
-angular.module( 'ngBoilerplate', [
+angular.module( 'app', [
   'templates-app',
   'templates-common',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about'
+  'app.home',
+  'app.about'
   'ui.router',
   'ui.route'
 ])

@@ -19,7 +19,7 @@ angular.module( 'app', [
   // Router
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | TweetCupboard' ;
+      $scope.pageTitle = toState.data.pageTitle + ' | Powerline for Twitter' ;
     }
   });
 

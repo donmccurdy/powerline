@@ -5,16 +5,16 @@
 
     <!-- social media tags -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@don_mccurdy">
-    <meta name="twitter:title" content="TweetCupboard">
-    <meta name="twitter:description" content="Web application for organizingn your Twitter lists.">
-    <meta name="twitter:creator" content="@don_mccurdy">
+    <meta name="twitter:site" content="<%= pkg.twitter %>">
+    <meta name="twitter:title" content="<%= pkg.title %>">
+    <meta name="twitter:description" content="<%= pkg.description %>">
+    <meta name="twitter:creator" content="<%= pkg.twitter %>">
     <meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
-    <meta property="og:title" content="TweetCupboard" />
+    <meta property="og:title" content="<%= pkg.title %>" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://www.donmccurdy.com" />
+    <meta property="og:url" content="<%= pkg.homepage %>" />
     <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
-    <meta property="og:description" content="Web application for organizingn your Twitter lists.">
+    <meta property="og:description" content="<%= pkg.description %>">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -42,10 +42,10 @@
             <span class="icon-bar"></span>
           </button>
           <div class="navbar-brand">
-            TweetCupboard
+            <%= pkg.title %>
             <small>
-              <a href="http://github.com/ngbp/ngbp/blob/v<%= version %>-release/CHANGELOG.md">
-                v<%= version %>
+              <a href="http://github.com/ngbp/ngbp/blob/v<%= pkg.version %>-release/CHANGELOG.md">
+                v<%= pkg.version %>
               </a>
             </small>
           </div>
@@ -65,10 +65,30 @@
               </a>
             </li>
             <li>
-              <a href="https://github.com/donmccurdy/tweetcupboard/issues">
-                <i class="fa fa-comments"></i>
-                Support
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-question-circle"></i>
+                Help
               </a>
+              <ul class="dropdown-menu" role="menu">
+                 <li>
+                  <a href="#"> 
+                    <i class="fa fa-rocket"></i>
+                    Tutorial
+                  </a>
+                </li>
+                 <li>
+                  <a href="#"> 
+                    <i class="fa fa-keyboard-o"></i>
+                    Shortcuts
+                  </a>
+                </li>
+                 <li>
+                  <a href="https://github.com/donmccurdy/powerline/issues"> 
+                    <i class="fa fa-comments"></i>
+                    Support
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

@@ -1,16 +1,19 @@
 {
-  "author": "Josh David Miller",
-  "name": "ngbp",
-  "version": "0.3.2",
-  "homepage": "https://github.com/ngbp/ngbp",
+  "author": "Don McCurdy",
+  "name": "twitter-powerline",
+  "title": "Powerline for Twitter",
+  "description": "Create and update Twitter lists through a clean, fast, and simple interface.",
+  "version": "0.0.1",
+  "homepage": "http://www.donmccurdy.com/powerline",
+  "twitter": "@don_mccurdy",
   "licenses": {
     "type": "MIT",
-    "url": "https://raw.github.com/ngbp/ngbp/master/LICENSE"
+    "url": "https://raw.github.com/donmccurdy/powerline/master/LICENSE"
   },
-  "bugs": "https://github.com/ngbp/ngbp/issues",
+  "bugs": "https://github.com/donmccurdy/powerline/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ngbp/ngbp.git"
+    "url": "git@github.com:donmccurdy/powerline.git"
   },
   "dependencies": {},
   "devDependencies": {

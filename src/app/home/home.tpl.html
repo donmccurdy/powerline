@@ -1,6 +1,6 @@
-<div class="jumbotron">
-  <h1 ng-non-bindable>{{app}}</h1>
+<div class="jumbotron" ng-hide="user.id">
+  <h1 ng-non-bindable>Powerline for Twitter</h1>
   <p class="lead" ph-txt="3s"></p>
 </div>
 
-<sorter-view></sorter-view>
+<sorter-view ng-show="user.id"></sorter-view>

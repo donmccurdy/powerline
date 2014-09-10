@@ -1,5 +1,5 @@
 angular.module( 'app.list', [
-	'app.services'
+	'common.twitter'
 ])
 
 .controller('ListController', function ListController ($scope, twitterService) {

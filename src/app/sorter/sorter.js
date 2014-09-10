@@ -1,5 +1,5 @@
 angular.module( 'app.sorter', [
-	'app.services'
+	'common.twitter'
 ])
 
 .controller('SorterController', function SorterController ($scope, twitterService) {

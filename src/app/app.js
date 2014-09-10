@@ -5,7 +5,7 @@ angular.module( 'app', [
   'app.about',
   'app.list',
   'app.sorter',
-  'app.services',
+  'common.twitter',
   'ui.router'
 ])
 
@@ -50,6 +50,10 @@ angular.module( 'app', [
   attemptInit();
 })
 
+// Keypress Listener
+//  This is bound globally and delegated down,
+//  making it possible to inject events through
+//  $rootScope when testing.
 .directive('keypressEvents', [
   '$document',
   '$rootScope',

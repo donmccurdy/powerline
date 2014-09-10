@@ -1,7 +1,7 @@
 /**
  * Twitter Service
  */
-angular.module('app.services', []).factory('twitterService', function($q) {
+angular.module('common.twitter', []).factory('twitterService', function($q) {
 
 	var authorizationResult = false;
 	var listeners = {
@@ -12,6 +12,39 @@ angular.module('app.services', []).factory('twitterService', function($q) {
 		listeners[event].forEach(function (cbk) {
 			cbk(data);
 		});
+	};
+
+	// Dead simple localStorage
+	// TODO: this will need to be updated periodically.
+	var cache = {
+		cache: {},
+		get: function (key) {
+			var json;
+			if (this.cache[key]) {
+				return this.cache[key];
+			} else if ((json = localStorage.getItem(key))) {
+				return JSON.parse(json);
+			}
+			return null;
+		},
+		set: function (key, value) {
+			this.cache[key] = value;
+			localStorage.setItem(key, JSON.stringify(value));
+		},
+		bind: function (key, fetch) {
+			var cache = this,
+				deferred = $q.defer(),
+				data = this.get(key);
+			if (data) {
+				deferred.resolve(data);
+			} else {
+				fetch(deferred);
+				deferred.promise.then(function (data) {
+					cache.set(key, data);
+				});
+			}
+			return deferred.promise;
+		}
 	};
 
 	return {
@@ -46,28 +79,18 @@ angular.module('app.services', []).factory('twitterService', function($q) {
 			authorizationResult = false;
 		},
 		getCurrentUser: function () {
-			var deferred = $q.defer();
-			authorizationResult.get('/1.1/account/verify_credentials.json').done(function (data) {
-				console.log(data);
-				deferred.resolve(data);
+			return cache.bind('current-user', function (deferred) {
+				authorizationResult.get('/1.1/account/verify_credentials.json').done(function (data) {
+					deferred.resolve(data);
+				});
 			});
-			return deferred.promise;
 		},
 		getFriends: function () {
-			var key = 'all-friends-because-testing';
-			var deferred = $q.defer();
-			var data = localStorage.getItem(key);
-
-			if (data && (data = JSON.parse(data))) {
-				deferred.resolve(data);
-			} else {
+			return cache.bind('all-friends', function (deferred) {
 				authorizationResult.get('/1.1/friends/list.json').done(function (data) {
 					deferred.resolve(data);
-					localStorage.setItem(key, JSON.stringify(data));
 				});
-			}	
-
-			return deferred.promise;
+			});
 		}
 	};    
 });

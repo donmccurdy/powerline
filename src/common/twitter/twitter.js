@@ -1,7 +1,17 @@
 /**
  * Twitter Service
+ *
+ * Handles authorization (through OAuth.io), fetching
+ * 	details for the current user, and fetching a list
+ * 	of friends.
+ *
+ * We'll need to support more complicated Twitter API
+ * 	interactions, so most of that will probably
+ * 	need to be located elsewhere.
  */
-angular.module('common.twitter', []).factory('twitterService', function($q) {
+angular.module('common.twitter', [
+	'common.cache'
+]).factory('twitterService', function($q, cacheService) {
 
 	var authorizationResult = false;
 	var listeners = {
@@ -14,45 +24,11 @@ angular.module('common.twitter', []).factory('twitterService', function($q) {
 		});
 	};
 
-	// Dead simple localStorage
-	// TODO: this will need to be updated periodically.
-	var cache = {
-		cache: {},
-		get: function (key) {
-			var json;
-			if (this.cache[key]) {
-				return this.cache[key];
-			} else if ((json = localStorage.getItem(key))) {
-				return JSON.parse(json);
-			}
-			return null;
-		},
-		set: function (key, value) {
-			this.cache[key] = value;
-			localStorage.setItem(key, JSON.stringify(value));
-		},
-		bind: function (key, fetch) {
-			var cache = this,
-				deferred = $q.defer(),
-				data = this.get(key);
-			if (data) {
-				deferred.resolve(data);
-			} else {
-				fetch(deferred);
-				deferred.promise.then(function (data) {
-					cache.set(key, data);
-				});
-			}
-			return deferred.promise;
-		}
-	};
-
 	return {
 		initialize: function() {
 			OAuth.initialize('K7fLOqzxZpGs6BJeSikeQFoSlbc', {cache:true});
 			authorizationResult = OAuth.create('twitter');
 			if (authorizationResult) {
-				console.log(authorizationResult);
 				publish('ready');
 			}
 		},
@@ -79,14 +55,14 @@ angular.module('common.twitter', []).factory('twitterService', function($q) {
 			authorizationResult = false;
 		},
 		getCurrentUser: function () {
-			return cache.bind('current-user', function (deferred) {
+			return cacheService.bind('current-user', function (deferred) {
 				authorizationResult.get('/1.1/account/verify_credentials.json').done(function (data) {
 					deferred.resolve(data);
 				});
 			});
 		},
 		getFriends: function () {
-			return cache.bind('all-friends', function (deferred) {
+			return cacheService.bind('all-friends', function (deferred) {
 				authorizationResult.get('/1.1/friends/list.json').done(function (data) {
 					deferred.resolve(data);
 				});

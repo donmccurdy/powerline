@@ -11,9 +11,9 @@ angular.module( 'app.sorter', [
 	self.lists = [];
 
 	self.targets = [
-		{source: 'following'},
-		{source: 'following', ui: true},
-		{source: 'following'}
+		{id: 0, name: 'Left', source: ''},
+		{id: 1, name: 'Following', source: 'following', ui: true},
+		{id: 2, name: 'Right', source: ''}
 	];
 	self.focused = self.targets[1];
 	
@@ -21,26 +21,28 @@ angular.module( 'app.sorter', [
 		// todo
 	};
 
-	$scope.$on('keydown', function ($e, e) {
-		if (self.focused && [37, 38, 39, 40].indexOf(e.keyCode) >= 0) {
-			e.preventDefault();
-			$scope.$apply(function () {
-				self.focused.trigger(e);
-			});
-		}
-	});
-
-
-
-
 	if (twitterService.isReady()) {
 		init();
 	} else {
 		twitterService.on('ready', init);
 	}
 
-	self.move = function (source, direction, uid) {
-
+	/**
+	 * Moves a user from the source to the next list
+	 *	in the given direction.
+	 *	@param int list_id
+	 * 	@param int direction (+/-1 for right/left)
+	 * 	@param object user
+	 * 	@return boolean success
+	 */
+	self.move = function (source, direction, user) {
+		var target = self.targets[source + direction],
+			ctrl = target.ctrl;
+		if (ctrl) {
+			ctrl.addUser(user);
+			return true;
+		}
+		return false;
 	};
 
 	self.focus = function (target) {
@@ -51,6 +53,16 @@ angular.module( 'app.sorter', [
 			}
 		});
 	};
+
+	//////////////////// Keypress Delegation
+	$scope.$on('keydown', function ($e, e) {
+		if (self.focused && [37, 38, 39, 40].indexOf(e.keyCode) >= 0) {
+			e.preventDefault();
+			$scope.$apply(function () {
+				self.focused.trigger(e);
+			});
+		}
+	});
 })
 
 .directive('sorterView', function SorterDirective () {

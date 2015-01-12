@@ -1,56 +1,145 @@
 module.exports = (grunt) ->
 
-	# Project configuration.
 	grunt.initConfig(
 
 		pkg: grunt.file.readJSON 'package.json'
+		build_dir: 'build'
+		js_dir: "<%= build_dir %>/assets/js"
+		css_dir: "<%= build_dir %>/assets/css"
+
+		#
+		# COFFEESCRIPT COMPILATION
 
 		coffee:
-			app:
+			main:
 				options:
 					join: true
 					sourceMap: true
 				files:
-					'build/<%= pkg.name %>.js': ['src/coffee/*.coffee']
+					"<%= js_dir %>/<%= pkg.name %>.js": ['src/coffee/*.coffee']
+
+		#
+		# SASS COMPILATION
 
 		sass:
 			options:
 				style: 'compressed'
-			dist:
-				files: ['build/<%= pkg.name %>.css': 'src/sass/main.scss']
+			main:
+				files: ["<%= css_dir %>/<%= pkg.name %>.css": 'src/sass/main.scss']
+
+		#
+		# JS MINIFICATION
 
 		uglify:
-			options:
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-			build:
-				src: 'build/<%= pkg.name %>.js'
-				dest: 'build/<%= pkg.name %>.min.js'
+			main:
+				options:
+					wrap: "<%= pkg.name %>"
+					banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+					files:
+						"<%= js_dir %>/<%= pkg.name %>.min.js": "<%= js_dir %>/<%= pkg.name %>.js"
+			templates:
+				options:
+					exposeAll: true
+					"<%= js_dir %>/templates.min.js": "<%= js_dir %>/templates.js"
+
+		#
+		# SEMVER HELPER
 
 		bump:
 			options:
 				files: [
-					"package.json", 
-					"bower.json"
+					'package.json', 
+					'bower.json'
 				],
 				commit: false,
 				commitFiles: [
-				  "package.json", 
-				  "bower.json"
+				  'package.json', 
+				  'bower.json'
 				],
 				push: false,
 				pushTo: 'origin' 
 
-		clean: ['build']
+		#
+		# HTML + DEPENDENCIES
+
+		copy:
+			main:
+				expand: true
+				flatten: true
+				src: 'src/layout/index.html'
+				dest: "<%= build_dir %>/"
+			vendor:
+				expand: true
+				flatten: true
+				src: [
+					'node_modules/lodash/dist/lodash.min.js'
+					'bower_components/jquery/dist/jquery.min.js'
+					'bower_components/jquery/dist/jquery.min.map'
+					'bower_components/oauth-js/dist/oauth.min.js'
+				]
+				dest: "<%= build_dir %>/lib/"
+
+		#
+		# TEMPLATES
+		
+		jst:
+			main:
+				options:
+					templateSettings:
+						evaluate:    /\{\{(.+?)\}\}/g
+						interpolate: /\{\{=(.+?)\}\}/g
+						escape:      /\{\{-(.+?)\}\}/g
+					processName: (filename) ->
+						filename
+							.slice(filename.indexOf('partials') + 9, filename.length)
+							.replace('.tpl.html', '')
+
+				files:
+					"<%= js_dir %>/templates.js": ['src/layout/partials/**/*.tpl.html']
+
+		#
+		# LOCAL SERVER
+
+		connect:
+			main:
+				options:
+					keepalive: true
+					hostname: 'localhost'
+					port: 8000
+					base:
+						path: "<%= build_dir %>"
+						options:
+							index: 'index.html'
+
+		#
+		# WATCH
+
+		watch:
+			js:
+				files: 'src/**/*.coffee'
+				tasks: ['coffee']
+			css:
+				files: 'src/**/*.scss'
+				tasks: ['sass']
+
+		#
+		# CLEANUP
+
+		clean: ["<%= build_dir %>"]
+
 	)
 
-	grunt.loadNpmTasks 'grunt-contrib-requirejs'
+	grunt.loadNpmTasks 'grunt-contrib-connect'
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	grunt.loadNpmTasks 'grunt-contrib-uglify'
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 	grunt.loadNpmTasks 'grunt-contrib-clean'
+	grunt.loadNpmTasks 'grunt-contrib-copy'
 	grunt.loadNpmTasks 'grunt-contrib-sass'
+	grunt.loadNpmTasks 'grunt-contrib-jst'
 	grunt.loadNpmTasks 'grunt-bump'
 
-	# Default task(s).
-	grunt.registerTask('default', ['clean', 'coffee', 'uglify', 'sass'])
+	grunt.registerTask('default', ['clean', 'copy:main', 'copy:vendor', 'jst', 'coffee', 'sass'])
+	grunt.registerTask('deploy', ['default', 'uglify'])
+
 	null

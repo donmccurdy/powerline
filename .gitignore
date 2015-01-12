@@ -1,3 +1,10 @@
-.DS_Store
+# Deploy folder
+build
+
+# Dependencies
 node_modules
-dist
+bower_components
+
+# Side Effects
+.DS_Store
+.sass-cache

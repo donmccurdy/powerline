@@ -1,10 +1,12 @@
 {
   "name": "powerline",
-  "version": "0.0.1",
-  "description": "Blah blah blah",
+  "version": "0.0.2",
+  "description": "Create and update Twitter lists through a clean, fast, and simple interface.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "compile": "grunt",
+    "test": "grunt test",
+    "start": "grunt connect"
   },
   "keywords": [
     "twitter",

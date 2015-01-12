@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "powerline.js",
+  "sourceRoot": "../src/coffee/",
+  "sources": [
+    "main.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;AAAA,EAAA,OAAA,CAAQ,CAAC,QAAD,CAAR,EAAoB,SAAC,MAAD,GAAA;AACnB,QAAA,SAAA;WAAM;AACQ,MAAA,mBAAA,GAAA;AACZ,QAAA,OAAO,CAAC,GAAR,CAAY,SAAZ,CAAA,CADY;MAAA,CAAb;;uBAAA;;SAFkB;EAAA,CAApB,CAAA,CAAA;AAAA"
+}

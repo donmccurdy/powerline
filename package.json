@@ -1,6 +1,6 @@
 {
   "name": "powerline",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Blah blah blah",
   "main": "index.js",
   "scripts": {

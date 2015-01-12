@@ -1,0 +1,28 @@
+{
+  "name": "powerline",
+  "main": "index.js",
+  "version": "0.0.1",
+  "authors": [
+    "Don McCurdy <don.r.mccurdy@gmail.com>"
+  ],
+  "description": "Blah blah",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "twitter",
+    "client",
+    "list",
+    "management"
+  ],
+  "license": "MIT",
+  "homepage": "https://www.donmccurdy.com/powerline",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

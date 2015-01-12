@@ -1,17 +1,119 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link href="./assets/css/powerline.css" rel="stylesheet">
+		<link rel="stylesheet" href="./assets/css/powerline.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 	</head>
 	<body>
-		<header>
-			<h1>Powerline</h1>
-		</header>
-		<div id="content">
-			<p>Greetings humanoid</p>
+		<div class="container">
+			<div class="navbar navbar-default">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
+					ng-click="menuCollapsed = ! menuCollapsed">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					</button>
+					<div class="navbar-brand">
+						<%= pkg.title %>
+						<small>
+						<a href="http://github.com/donmccurdy/powerline/blob/v<%= pkg.version %>-release/CHANGELOG.md">
+							v<%= pkg.version %>
+						</a>
+						</small>
+					</div>
+				</div>
+				<div class="collapse navbar-collapse" collapse="menuCollapsed">
+					<ul class="nav navbar-nav">
+						<li ui-sref-active="active">
+							<a href ui-sref="home">
+								<i class="fa fa-home"></i>
+								Home
+							</a>
+						</li>
+						<li ui-sref-active="active">
+							<a href ui-sref="about">
+								<i class="fa fa-info-circle"></i>
+								About
+							</a>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-question-circle"></i>
+								Help
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="#">
+										<i class="fa fa-rocket"></i>
+										Tutorial
+									</a>
+								</li>
+								<li>
+									<a href="#">
+										<i class="fa fa-keyboard-o"></i>
+										Shortcuts
+									</a>
+								</li>
+								<li>
+									<a href="https://github.com/donmccurdy/powerline/issues">
+										<i class="fa fa-comments"></i>
+										Support
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li ng-hide="logged_in">
+							<a href="#" ng-click="connectButton()">
+								<i class="fa fa-sign-in"></i>
+								Sign In
+							</a>
+						</li>
+						<li ng-show="user.id">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								{{user.name}} <span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+									<a href="#" ng-click="signOut()">
+										<i class="fa fa-sign-out"></i>
+										Sign Out
+									</a>
+								</li>
+							</ul>
+						</li>
+						<img class="img-circle navbar-brand avatar"
+							ng-show="user.id"
+							ng-src="{{user.profile_image_url_https}}"
+							alt="profile image">
+					</ul>
+				</div>
+			</div>
 		</div>
 
+		<div class="container" ui-view="main">
+			<div class="jumbotron" ng-hide="user.id">
+				<h1 ng-non-bindable>Powerline for Twitter</h1>
+				<p class="lead" ph-txt="3s"></p>
+			</div>
+			<sorter-view ng-show="user.id"></sorter-view>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-inner">
+					<p>
+					Created by <a href="https://twitter.com/don_mccurdy">@don_mccurdy</a>
+					</p>
+				</div>
+			</div>
+		</footer>
+
 		<script src="./lib/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 		<script src="./lib/lodash.min.js"></script>
 		<script src="./lib/oauth.min.js"></script>
 		<script src="./assets/js/templates.js"></script>

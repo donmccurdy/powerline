@@ -35,11 +35,12 @@ module.exports = (grunt) ->
 				options:
 					wrap: "<%= pkg.name %>"
 					banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-					files:
-						"<%= js_dir %>/<%= pkg.name %>.min.js": "<%= js_dir %>/<%= pkg.name %>.js"
+				files:
+					"<%= js_dir %>/<%= pkg.name %>.min.js": "<%= js_dir %>/<%= pkg.name %>.js"
 			templates:
 				options:
 					exposeAll: true
+				files:
 					"<%= js_dir %>/templates.min.js": "<%= js_dir %>/templates.js"
 
 		#
@@ -116,11 +117,14 @@ module.exports = (grunt) ->
 
 		watch:
 			js:
-				files: 'src/**/*.coffee'
+				files: 'src/coffee/**/*.coffee'
 				tasks: ['coffee']
 			css:
-				files: 'src/**/*.scss'
+				files: 'src/sass/**/*.scss'
 				tasks: ['sass']
+			templates:
+				files: 'src/layout/**/*.html'
+				tasks: ['copy:main', 'jst']
 
 		#
 		# CLEANUP

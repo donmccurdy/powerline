@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>TODO PAGE TITLE</title>
+		<title>Home | <%= pkg.title %></title>
 
 		<!-- social media tags -->
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="<%= pkg.twitter %>">
 		<meta name="twitter:title" content="<%= pkg.title %>">
-		<meta name="twitter:description" content="<%= pkg.description %>">
+		<meta name="twitter:description" content="<%- pkg.description %>">
 		<meta name="twitter:creator" content="<%= pkg.twitter %>">
 		<meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
 		<meta property="og:title" content="<%= pkg.title %>" />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="<%= pkg.homepage %>" />
 		<meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
-		<meta property="og:description" content="<%= pkg.description %>">
+		<meta property="og:description" content="<%- pkg.description %>">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 

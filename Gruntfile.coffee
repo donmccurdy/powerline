@@ -69,6 +69,9 @@ module.exports = (grunt) ->
 				flatten: true
 				src: 'src/layout/index.html'
 				dest: "<%= build_dir %>/"
+				options:
+					process: (content) ->
+						grunt.template.process(content)
 			vendor:
 				expand: true
 				flatten: true

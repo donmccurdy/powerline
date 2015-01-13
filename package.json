@@ -1,7 +1,15 @@
 {
   "name": "powerline",
+  "title": "Powerline",
   "version": "0.0.2",
   "description": "Create and update Twitter lists through a clean, fast, and simple interface.",
+  "homepage": "http://www.donmccurdy.com/powerline",
+  "twitter": "@don_mccurdy",
+  "bugs": "https://github.com/donmccurdy/powerline/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:donmccurdy/powerline.git"
+  },
   "main": "index.js",
   "scripts": {
     "compile": "grunt",

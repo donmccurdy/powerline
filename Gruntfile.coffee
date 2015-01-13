@@ -74,6 +74,7 @@ module.exports = (grunt) ->
 				flatten: true
 				src: [
 					'node_modules/lodash/dist/lodash.min.js'
+					'node_modules/eventify/dist/eventify.min.js'
 					'bower_components/jquery/dist/jquery.min.js'
 					'bower_components/jquery/dist/jquery.min.map'
 					'bower_components/oauth-js/dist/oauth.min.js'

@@ -1,12 +1,6 @@
-class Bootstrap
-	constructor: () ->
-		console.log 'Je suis'
-
-	config: () ->
-		console.log 'config()'
-
+# Main
 bootstrap = new Bootstrap()
-bootstrap.config()
+bootstrap.start()
 
 # Exports
 window.Bootstrap = Bootstrap

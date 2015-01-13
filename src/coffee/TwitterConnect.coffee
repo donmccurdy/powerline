@@ -16,13 +16,13 @@ class TwitterConnect
 		ready: []
 
 	publish: (event, data) ->
-		@listeners[event].forEach((cbk) -> cbk(data))
+		@listeners[event].forEach (cbk) -> cbk(data)
 
 	initialize: ->
 		OAuth.initialize 'K7fLOqzxZpGs6BJeSikeQFoSlbc', cache:true
 		@authResult = OAuth.create 'twitter'
 		if @authResult
-			publish 'ready'
+			@publish 'ready'
 
 	isReady: ->
 		@authResult
@@ -31,13 +31,12 @@ class TwitterConnect
 		@listeners[event].push(callback)
 
 	connectTwitter: ->
-		deferred = $.Deferred();
-		OAuth.popup 'twitter', cache: true, (error, result) ->
-			if (error)
-				return
+		deferred = $.Deferred()
+		OAuth.popup 'twitter', cache: true, (error, result) =>
+			if error then return
 			@authResult = result
 			deferred.resolve()
-			publish 'ready'
+			@publish 'ready'
 		deferred
 
 	clearCache: ->
@@ -45,11 +44,11 @@ class TwitterConnect
 		@authResult = false
 
 	getCurrentUser: ->
-		return @cache.bind 'current-user', (deferred) ->
-			@authResult.get('/1.1/account/verify_credentials.json').done (data) ->
-				deferred.resolve(data)
+		return @cache.bind 'current-user', (deferred) =>
+			@authResult?.get('/1.1/account/verify_credentials.json').done (data) ->
+				deferred.resolve data
 
 	getFriends: ->
-		return @cache.bind 'all-friends', (deferred) ->
+		return @cache.bind 'all-friends', (deferred) =>
 			@authResult.get('/1.1/friends/list.json').done (data) ->
-				deferred.resolve(data)
+				deferred.resolve data

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Home | <%= pkg.title %></title>
+		<title>Home | {{= pkg.title }}</title>
 
 		<!-- social media tags -->
 		<meta name="twitter:card" content="summary">
-		<meta name="twitter:site" content="<%= pkg.twitter %>">
-		<meta name="twitter:title" content="<%= pkg.title %>">
-		<meta name="twitter:description" content="<%- pkg.description %>">
-		<meta name="twitter:creator" content="<%= pkg.twitter %>">
+		<meta name="twitter:site" content="{{= pkg.twitter }}">
+		<meta name="twitter:title" content="{{= pkg.title }}">
+		<meta name="twitter:description" content="{{- pkg.description }}">
+		<meta name="twitter:creator" content="{{= pkg.twitter }}">
 		<meta name="twitter:image:src" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846">
-		<meta property="og:title" content="<%= pkg.title %>" />
+		<meta property="og:title" content="{{= pkg.title }}" />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="<%= pkg.homepage %>" />
+		<meta property="og:url" content="{{= pkg.homepage }}" />
 		<meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/modules/logos_page/Octocat.png?1366128846" />
-		<meta property="og:description" content="<%- pkg.description %>">
+		<meta property="og:description" content="{{- pkg.description }}">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="stylesheet" href="./assets/css/powerline.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 	</head>
 	<body>
 
@@ -36,10 +36,10 @@
 					<span class="icon-bar"></span>
 					</button>
 					<div class="navbar-brand">
-						<%= pkg.title %>
+						{{= pkg.title }}
 						<small>
-						<a href="http://github.com/donmccurdy/powerline/blob/v<%= pkg.version %>-release/CHANGELOG.md">
-							v<%= pkg.version %>
+						<a href="http://github.com/donmccurdy/powerline/blob/v{{= pkg.version }}-release/CHANGELOG.md">
+							v{{= pkg.version }}
 						</a>
 						</small>
 					</div>
@@ -101,34 +101,7 @@
 
 			<!-- workspace -->
 			<sorter-view ng-show="user.id">
-				<header class="row list-header">
-					<div class="col-md-2 sorter-btn-wrap">
-						<div class="sorter-btn-left btn btn-default fa fa-chevron-left" ng-show="list.ui"></div>
-					</div>
-					<div class="col-md-8 sorter-btn-left">
-						<h2>{{list.name}}</h2>
-						<description ph-txt="1s"></description>
-					</div>
-					<div class="col-md-2 sorter-btn-wrap">
-						<div class="sorter-btn-right btn btn-default fa fa-chevron-right" ng-show="list.ui"></div>
-					</div>
-				</header>
-				<ul class="list-unstyled">
-					<li class="row user-cell"
-						ng-repeat="(index,user) in list.users"
-						ng-click="list.select(index)"
-						ng-class="{selected: index == list.selected}">
-						<div class="col-md-2">
-							<img class="img-circle" ng-src="{{user.profile_image_url_https}}" alt="user.screen_name profile image">
-						</div>
-						<div class="col-md-10">
-							<div>
-								<b>@{{user.screen_name}}</b> <small>{{user.name}}</small>
-							</div>	
-							<i>{{user.description}}</i>
-						</div>
-					</li>
-				</ul>
+				<!-- list.tpl.html -->
 			</sorter-view>
 		</div>
 
@@ -145,11 +118,11 @@
 
 		<!-- scripts -->
 		<script src="./lib/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 		<script src="./lib/lodash.min.js"></script>
 		<script src="./lib/eventify.min.js"></script>
 		<script src="./lib/oauth.min.js"></script>
 		<script src="./assets/js/templates.js"></script>
 		<script src="./assets/js/powerline.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	</body>
 </html>

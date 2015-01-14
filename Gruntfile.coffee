@@ -1,5 +1,7 @@
 module.exports = (grunt) ->
 
+	grunt.template.addDelimiters('handlebars', '{{', '}}')
+
 	grunt.initConfig(
 
 		pkg: grunt.file.readJSON 'package.json'
@@ -65,13 +67,11 @@ module.exports = (grunt) ->
 
 		copy:
 			main:
-				expand: true
-				flatten: true
-				src: 'src/layout/index.html'
-				dest: "<%= build_dir %>/"
+				src: 'src/layout/index.tpl.html'
+				dest: "<%= build_dir %>/index.html"
 				options:
 					process: (content) ->
-						grunt.template.process(content)
+						grunt.template.process(content, delimiters: 'handlebars')
 			vendor:
 				expand: true
 				flatten: true

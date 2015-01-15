@@ -50,17 +50,9 @@ module.exports = (grunt) ->
 
 		bump:
 			options:
-				files: [
-					'package.json', 
-					'bower.json'
-				],
-				commit: false,
-				commitFiles: [
-				  'package.json', 
-				  'bower.json'
-				],
-				push: false,
 				pushTo: 'origin' 
+				files: ['package.json', 'bower.json']
+				commitFiles: ['package.json', 'bower.json']
 
 		#
 		# HTML + DEPENDENCIES

@@ -1,0 +1,3 @@
+class EventEmitter
+	Eventify.enable @::
+	

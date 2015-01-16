@@ -4,18 +4,23 @@ class Bootstrap
 	user: null,
 
 	constructor: () ->
-		@twitter = new TwitterConnect();
-		@$header = $('.pline-header');
+		@twitter = new TwitterConnect()
+		@$header = $('.pline-header')
+		@friends = null
+		@collection = null
 
 	login: () ->
 		if @twitter.isReady()
-			@twitter.getCurrentUser().then (user) =>
+			@twitter.getCurrentUser().done (user) =>
 				@user = user
+				@collection = new ListCollection(@user, @twitter)
 		@render()
 
 	logout: () ->
-		@twitter.clearCache()
+		@twitter.logout()
 		@user = null
+		@collection = null
+		@friends = null
 		window.location.reload(false)
 
 	start: () ->

@@ -1,0 +1,10 @@
+<select class='available-lists'>
+	{{ _.forEach(available_lists, function (list) { }}
+		<option value="{{= list.id }}">{{- list.name }}</option>
+	{{ }) }}
+</select>
+<ul class='collection'>
+	{{ _.forEach(lists, function (list) { }}
+		<li><ol class='list' data-id={{= list.id }}></ol></li>
+	{{ }) }}
+</ul>

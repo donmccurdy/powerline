@@ -1,17 +1,27 @@
 class List extends EventEmitter
 
-	constructor: ($el, twitterService) ->
-		@el = $el
-		@users = []
-		@twitter = twitterService
-		@render()
-		@bindEvents()
+	constructor: (id, twitter) ->
+		@twitter = twitter
+		@id = id
+
+	init: () ->
+		if @id is 0
+			@twitter.getFriends().done (users) =>
+				@users = users
+				@name = 'Following'
+				@trigger 'load'
+		else
+			throw "unknown list #{id}"
 
 	render: () ->
-		user.render() for user in @users
+		rows = _.map @users, (user) -> JST.user(user)
+		@el = @el or $(".list[data-id=#{@id}]")
+		@el.html rows.join('')
+		@bindEvents()
+		@el
 
 	bindEvents: () ->
-		console.log 'bind events'
+		console.log "bind events on List #{@id}"
 
 	pluck: (property) ->
 		_.pluck @users, property

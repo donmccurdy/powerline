@@ -39,7 +39,7 @@ class TwitterConnect
 			@publish 'ready'
 		deferred
 
-	clearCache: ->
+	logout: ->
 		OAuth.clearCache 'twitter'
 		@authResult = false
 
@@ -49,6 +49,15 @@ class TwitterConnect
 				deferred.resolve data
 
 	getFriends: ->
-		return @cache.bind 'all-friends', (deferred) =>
-			@authResult.get('/1.1/friends/list.json').done (data) ->
+		options = 
+			count: 200
+			skip_status: true
+			include_user_entities: false
+		return @cache.bind 'friends', (deferred) =>
+			@authResult.get('/1.1/friends/list.json?' + $.param(options)).done (data) ->
+				deferred.resolve data.users
+
+	getLists: ->
+		return @cache.bind 'lists', (deferred) =>
+			@authResult.get('/1.1/lists/list.json' + $.param(reverse: true)).done (data) ->
 				deferred.resolve data

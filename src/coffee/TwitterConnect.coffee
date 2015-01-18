@@ -48,16 +48,28 @@ class TwitterConnect
 			@authResult?.get('/1.1/account/verify_credentials.json').done (data) ->
 				deferred.resolve data
 
-	getFriends: ->
+	getFriends: (cursor) ->
 		options = 
-			count: 200
+			cursor: cursor
+			count: 200 # max = 200, 15 / 15 min
 			skip_status: true
 			include_user_entities: false
-		return @cache.bind 'friends', (deferred) =>
+		return @cache.bind "friends-#{cursor}", (deferred) =>
 			@authResult.get('/1.1/friends/list.json?' + $.param(options)).done (data) ->
-				deferred.resolve data.users
+				deferred.resolve data
 
-	getLists: ->
-		return @cache.bind 'lists', (deferred) =>
-			@authResult.get('/1.1/lists/list.json' + $.param(reverse: true)).done (data) ->
+	getLists: (cursor) ->
+		return @cache.bind "lists", (deferred) =>
+			@authResult.get('/1.1/lists/list.json?' + $.param(reverse: true)).done (data) ->
+				deferred.resolve data
+
+	getListMembers: (listID, cursor) ->
+		options =
+			list_id: listID
+			cursor: cursor
+			count: 200 # max = 5000, 180 / 15 min
+			skip_status: true
+			include_entities: false
+		return @cache.bind "list-#{listID}-#{cursor}", (deferred) =>
+			@authResult.get("/1.1/lists/members.json?" + $.param(options)).done (data) ->
 				deferred.resolve data

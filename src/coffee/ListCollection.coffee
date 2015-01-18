@@ -1,7 +1,8 @@
 class ListCollection extends EventEmitter
 
 	constructor: (user, twitter) ->
-		@el = $('.collection-wrap')
+		@$el = $('.collection-wrap')
+		@$select = null
 		@user = user
 		@twitter = twitter
 		@lists = []
@@ -9,25 +10,48 @@ class ListCollection extends EventEmitter
 		@init()
 
 	init: () ->
+		# Lists
 		has_lists = $.Deferred()
-		has_friends = $.Deferred()
 		@twitter.getLists().done (lists) =>
 			@available_lists = lists
 			has_lists.resolve()
-		following = new List(0, @twitter)
-		following.on 'load', =>
-			@lists.push following
+		
+		# Following
+		has_friends = $.Deferred()
+		stream = new UserStream(0, 'Following', @twitter)
+		stream.ready().done =>
+			@lists.push(new List(stream))
 			has_friends.resolve()
-		following.init()
+
+		# Render
 		$.when(has_lists, has_friends).done => @render()
 
 	render: () ->
-		@el.html JST.collection(@)
-		rows = _.map @lists, (list) -> list.render()
-		@el.append rows
+		# collection ui
+		@$el.html JST.collection(@)
+		@$collection = @$el.find('.collection')
+		@$select = @$el.find('.available-lists')
+
+		# lists
+		elements = _.map @lists, (list) -> list.render()
+		@$collection.append elements
+
+		@bindEvents()
 
 	bindEvents: () ->
-		console.log 'bind events on ListCollection'
+		@$select.on 'change', =>
+			@push(@$select.val())
+
+	push: (id) ->
+		name = _(@available_lists)
+			.where(id: +id)
+			.pluck('name')
+			.first()
+		stream = new UserStream(id, name, @twitter)
+		stream.ready().done =>
+			list = new List(stream)
+			@$collection.append list.render()
+			@lists.push list
 
 	pluck: (property) ->
 		_.pluck @lists, property

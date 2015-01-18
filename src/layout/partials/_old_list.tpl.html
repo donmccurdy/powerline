@@ -1,0 +1,28 @@
+<header class="row list-header">
+	<div class="col-md-2 sorter-btn-wrap">
+		<div class="sorter-btn-left btn btn-default fa fa-chevron-left" ng-show="list.ui"></div>
+	</div>
+	<div class="col-md-8 sorter-btn-left">
+		<h2>{{- list.name}}</h2>
+		<description ph-txt="1s"></description>
+	</div>
+	<div class="col-md-2 sorter-btn-wrap">
+		<div class="sorter-btn-right btn btn-default fa fa-chevron-right" ng-show="list.ui"></div>
+	</div>
+</header>
+<ul class="list-unstyled">
+	<li class="row user-cell"
+		ng-repeat="(index,user) in list.users"
+		ng-click="list.select(index)"
+		ng-class="{selected: index == list.selected}">
+		<div class="col-md-2">
+			<img class="img-circle" ng-src="{{= user.profile_image_url_https}}" alt="{{- user.screen_name }} profile image">
+		</div>
+		<div class="col-md-10">
+			<div>
+				<b>@{{- user.screen_name}}</b> <small>{{- user.name}}</small>
+			</div>	
+			<i>{{- user.description}}</i>
+		</div>
+	</li>
+</ul>

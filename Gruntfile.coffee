@@ -100,7 +100,6 @@ module.exports = (grunt) ->
 		connect:
 			main:
 				options:
-					keepalive: true
 					hostname: 'localhost'
 					port: 8000
 					base:
@@ -140,6 +139,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-bump'
 
 	grunt.registerTask('default', ['clean', 'copy:main', 'copy:vendor', 'jst', 'coffee', 'sass'])
+	grunt.registerTask('start', ['default', 'connect', 'watch'])
 	grunt.registerTask('deploy', ['default', 'uglify'])
 
 	null

@@ -10,7 +10,7 @@ class List extends EventEmitter
 	render: () ->
 		rows = _.map @users, (user) =>
 			JST.user(user: user, selected: @selection?.contains user.id)
-		@el.find('ol').html rows.join('')
+		@el.find('.list').html rows.join('')
 		@bindEvents()
 		@el
 

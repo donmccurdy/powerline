@@ -1,7 +1,73 @@
-.collection > li {
-	list-style: none;
-	float: left;
+/* Type
+*********************************/
+
+body {
+	font-family: "Helvetica Neue";
 }
+
+.font-header {
+	font-size: 20px;
+	font-weight: 300;
+}
+
+/* Page
+*********************************/
+
+.footer {
+	height: 50px;
+	line-height: 50px;
+}
+
+/* Collection
+*********************************/
+
+$pageHeaderHeight: 100px;
+$pageFooterHeight: 50px;
+
+.collection {
+	white-space: nowrap;
+	width: 100%;
+	height: calc(100vh - #{$pageHeaderHeight} - #{$pageFooterHeight});
+	overflow-x: auto;
+}
+
+/* Lists
+*********************************/
+
+$listHeaderHeight: 40px;
+
+.list-wrap {
+	display: inline-block;
+	vertical-align: top;
+	height: 100%;
+	width: 300px;
+	white-space: normal;
+
+	// draft
+	border: 1px solid #eee;
+	box-sizing: border-box;
+	padding: 10px;
+	border-radius: 5px;
+
+	& + .list-wrap {
+		margin-left: 5px;
+	}
+}
+
+.list-title {
+	@extend .font-header;
+	height: $listHeaderHeight;
+	// line-height: $listHeaderHeight;
+}
+
+.list {
+	overflow-y: auto;
+	height: calc(100% - #{$listHeaderHeight});
+	margin: 0;
+}
+
+/* Users
+*********************************/
 
 .user.selected {
 	background: #f88;

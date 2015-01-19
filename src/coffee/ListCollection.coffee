@@ -2,10 +2,10 @@ class ListCollection extends EventEmitter
 
 	constructor: (user, twitter) ->
 		@$el = $('.collection-wrap')
-		@$select = null
 		@$collection = null
 		@user = user
 		@twitter = twitter
+		@toolbar = null
 		@selection = null
 		@lists = []
 		@available_lists = []
@@ -35,7 +35,7 @@ class ListCollection extends EventEmitter
 		# collection ui
 		@$el.html JST.collection(@)
 		@$collection = @$el.find('.collection')
-		@$select = @$el.find('.available-lists')
+		@toolbar = new Toolbar(@$el.find('.toolbar'), @)
 
 		# lists
 		elements = _.map @lists, (list) -> list.render()
@@ -44,9 +44,6 @@ class ListCollection extends EventEmitter
 		@bindEvents()
 
 	bindEvents: () ->
-		@$select.on 'change', =>
-			@push(@$select.val())
-
 		self = @
 		@$collection.on 'click', '.user', (e) ->
 			$this = $(this)
@@ -71,6 +68,8 @@ class ListCollection extends EventEmitter
 		metadata = _(@available_lists)
 			.where(id: +id)
 			.first()
+		unless metadata
+			throw "No such list: #{id}"
 		stream = new UserStream(id, metadata, @twitter)
 		stream.ready().done =>
 			list = new List(stream)

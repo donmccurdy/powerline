@@ -1,6 +1,11 @@
-<select class='available-lists'>
-	{{ _.forEach(available_lists, function (list) { }}
-		<option value="{{= list.id }}">{{- list.name }}</option>
-	{{ }) }}
-</select>
+<div class="panel panel-default toolbar">
+	<div class="panel-body">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default">Action 1</button>
+			<button type="button" class="btn btn-default">Action 2</button>
+			<button type="button" class="btn btn-default">Action 3</button>
+		</div>
+		<input type="text" class="form-control input-list-search" placeholder="+ Add a List">
+	</div>
+</div>
 <div class='collection'></div>

@@ -10,7 +10,7 @@ module.exports = (grunt) ->
 		'node_modules/eventify/dist/eventify.min.js'
 		'bower_components/jquery/dist/jquery.min.js'
 		'bower_components/oauth-js/dist/oauth.min.js'
-		'bower_components/typeahead.js/dist/typeahead.jquery.min.js'
+		'bower_components/asg.js/dist/asg.min.js'
 	]
 
 	grunt.initConfig(
@@ -32,6 +32,7 @@ module.exports = (grunt) ->
 			'List'
 			'ListCollection'
 			'Selection'
+			'Toolbar'
 			'TwitterConnect'
 			'UserStream'
 			'Bootstrap'
@@ -119,7 +120,11 @@ module.exports = (grunt) ->
 			vendor:
 				expand: true
 				flatten: true
-				src: vendor_scripts
+				src: vendor_scripts.concat [
+					'bower_components/jquery/dist/jquery.min.map'
+					'bower_components/jquery/dist/jquery.js'
+					'bower_components/asg.js/dist/asg.min.css'
+				]
 				dest: "<%= build_dir %>/lib/"
 
 		#

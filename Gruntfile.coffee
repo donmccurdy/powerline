@@ -10,15 +10,48 @@ module.exports = (grunt) ->
 		css_dir: "<%= build_dir %>/assets/css"
 
 		#
+		# SCRIPTS (there's got to be a way around this...)
+
+		dev_scripts: [
+			'EventEmitter'
+			'Cache'
+			'Keymap'
+			'List'
+			'ListCollection'
+			'TwitterConnect'
+			'UserStream'
+			'Bootstrap'
+			'main'
+		]
+
+		#
+		# ENVIRONMENT
+
+		env:
+			dev:
+				NODE_ENV: 'DEVELOPMENT'
+			prod:
+				NODE_ENV: 'PRODUCTION'
+
+		#
 		# COFFEESCRIPT COMPILATION
 
 		coffee:
-			main:
+			dist:
 				options:
 					join: true
 					sourceMap: true
 				files:
 					"<%= js_dir %>/<%= pkg.name %>.js": ['src/coffee/*.coffee']
+			dev:
+				expand: true
+				flatten: true
+				options:
+					bare: true
+					sourceMap: true
+				src: 'src/coffee/*.coffee'
+				dest: "<%= js_dir %>/.tmp/"
+				ext: '.js'
 
 		#
 		# SASS COMPILATION
@@ -137,9 +170,11 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-sass'
 	grunt.loadNpmTasks 'grunt-contrib-jst'
 	grunt.loadNpmTasks 'grunt-bump'
+	grunt.loadNpmTasks 'grunt-env'
 
-	grunt.registerTask('default', ['clean', 'copy:main', 'copy:vendor', 'jst', 'coffee', 'sass'])
-	grunt.registerTask('start', ['default', 'connect', 'watch'])
-	grunt.registerTask('deploy', ['default', 'uglify'])
+	grunt.registerTask('common', ['clean', 'copy:main', 'copy:vendor', 'jst', 'sass'])
+	grunt.registerTask('dev', ['env:dev', 'common', 'coffee:dev', 'connect', 'watch'])
+	grunt.registerTask('prod', ['env:prod', 'common', 'coffee:dist', 'uglify'])
+	grunt.registerTask('default', ['prod'])
 
 	null

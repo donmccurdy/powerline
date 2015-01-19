@@ -16,12 +16,7 @@ class List extends EventEmitter
 
 	setSelection: (selection) ->
 		@selection = selection
-		@selection.on 'change', =>
-			@render()
-		@selection.on 'destroy', =>
-			@selection = null
-			@render()
-		@render()
+		@selection.on 'destroy', => @selection = null
 
 	bindEvents: () ->
 		console.log "bind events on List #{@id}"

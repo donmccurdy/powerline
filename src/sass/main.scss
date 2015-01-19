@@ -5,7 +5,7 @@
 $bodyBlack: #444444;
 $lightGrey: #9d9d9d;
 $borderLight: #f0f0f0;
-$accent: #33f;
+$accent: #63BFB6;
 
 /* Type
 *********************************/
@@ -93,6 +93,7 @@ $listHeaderHeight: 40px;
 		border-top: 1px solid $borderLight;
 	}
 	&.selected {
+		background: $borderLight;
 		border-left: 2px solid $accent;
 		padding-left: 3px;
 	}

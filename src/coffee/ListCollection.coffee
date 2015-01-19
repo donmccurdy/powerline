@@ -52,13 +52,14 @@ class ListCollection extends EventEmitter
 			self.onUserClick userID, listID
 
 	onUserClick: (userID, listID) ->
-		if @selection?.listID is listID
+		list = @getList listID
+		if @selection?.list.id is listID
 			@selection.toggleUser userID
 		else
-			@selection?.trigger 'destroy'
-			@selection = new Selection(listID)
+			@selection?.destroy()
+			@selection = new Selection(list)
+			list.setSelection @selection
 			@selection.toggleUser userID
-			@getList(listID).setSelection(@selection)
 
 	getList: (listID) ->
 		_(@lists).where(id: +listID).first()

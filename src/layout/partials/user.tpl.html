@@ -1,4 +1,21 @@
-<li class="user {{= selected ? 'selected' : '' }}" data-id={{= user.id }}>
-	<span class="user-name">{{- user.name }}</span> | 
-	<span class="user-screen-name">{{- user.screen_name }}</span>
-</li>
+<div class="user {{= selected ? 'selected' : '' }}" data-id={{= user.id }}>
+	<div class="user-image-wrap">
+		<img class="user-image" src="{{= user.profile_image_url_https }}" alt="{{- user.name }} profile picture">
+	</div>
+	<div class="user-name">
+		{{- user.name }}
+		{{ if (user.protected) { }}
+		<span class="fa fa-lock"></span>
+		{{ } }}
+	</div>
+	<div class="user-screen-name">@{{- user.screen_name }}</div>
+	<div class="user-badges">
+		{{ if (user.following) { }}{{ } }}
+		{{ if (user.muting) { }}{{ } }}
+		{{ if (user.verified) { }}{{ } }}
+		{{ if (user.followers_count) { }}{{ } }}
+		{{ if (user.friends_count) { }}{{ } }}
+		{{ if (user.statuses_count) { }}{{ } }}
+		{{ if (false) { }}<!-- followed_by is a separate request -->{{ } }}
+	</div>
+</div>

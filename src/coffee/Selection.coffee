@@ -5,9 +5,9 @@ class Selection extends EventEmitter
 
 	toggleUser: (userID) ->
 		if _.contains @userIDs, userID
-			@userIDs = _.without @userIDs, userID	
+			@userIDs = []
 		else
-			@userIDs.push userID
+			@userIDs = [userID]
 		@trigger 'change'
 		
 	contains: (userID) ->

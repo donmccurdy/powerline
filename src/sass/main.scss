@@ -1,8 +1,24 @@
+
+/* Variables
+*********************************/
+
+$bodyBlack: #444444;
+$lightGrey: #9d9d9d;
+$borderLight: #f0f0f0;
+$accent: #33f;
+
 /* Type
 *********************************/
 
 body {
 	font-family: "Helvetica Neue";
+	color: $bodyBlack;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.fa {
+	color: $bodyBlack;
 }
 
 .font-header {
@@ -37,16 +53,13 @@ $pageFooterHeight: 50px;
 $listHeaderHeight: 40px;
 
 .list-wrap {
+	white-space: normal;
 	display: inline-block;
+	box-sizing: border-box;
 	vertical-align: top;
 	height: 100%;
 	width: 300px;
-	white-space: normal;
-
-	// draft
-	border: 1px solid #eee;
-	box-sizing: border-box;
-	padding: 10px;
+	border: 1px solid $borderLight;
 	border-radius: 5px;
 
 	& + .list-wrap {
@@ -57,7 +70,8 @@ $listHeaderHeight: 40px;
 .list-title {
 	@extend .font-header;
 	height: $listHeaderHeight;
-	// line-height: $listHeaderHeight;
+	line-height: 44px;
+	padding-left: 5px;
 }
 
 .list {
@@ -69,6 +83,31 @@ $listHeaderHeight: 40px;
 /* Users
 *********************************/
 
-.user.selected {
-	background: #f88;
+.user {
+	clear: both;
+	box-sizing: border-box;
+	cursor: default;
+	padding: 5px;
+
+	& + .user {
+		border-top: 1px solid $borderLight;
+	}
+	&.selected {
+		border-left: 2px solid $accent;
+		padding-left: 3px;
+	}
+}
+.user-image-wrap {
+	float: left;
+	margin-right: 10px;
+}
+.user-image {
+	height: 40px;
+}
+.user-name {
+	font-weight: 600;
+}
+.user-screen-name {
+	color: $lightGrey;
+	font-style: italic;
 }

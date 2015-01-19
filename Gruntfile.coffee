@@ -1,6 +1,17 @@
+_ = require 'lodash'
+path = require 'path'
+
 module.exports = (grunt) ->
 
 	grunt.template.addDelimiters('handlebars', '{{', '}}')
+
+	vendor_scripts = [
+		'node_modules/lodash/dist/lodash.min.js'
+		'node_modules/eventify/dist/eventify.min.js'
+		'bower_components/jquery/dist/jquery.min.js'
+		'bower_components/oauth-js/dist/oauth.min.js'
+		'bower_components/typeahead.js/dist/typeahead.jquery.min.js'
+	]
 
 	grunt.initConfig(
 
@@ -11,6 +22,8 @@ module.exports = (grunt) ->
 
 		#
 		# SCRIPTS (there's got to be a way around this...)
+
+		vendor_scripts: _.map vendor_scripts, path.basename
 
 		dev_scripts: [
 			'EventEmitter'
@@ -106,13 +119,7 @@ module.exports = (grunt) ->
 			vendor:
 				expand: true
 				flatten: true
-				src: [
-					'node_modules/lodash/dist/lodash.min.js'
-					'node_modules/eventify/dist/eventify.min.js'
-					'bower_components/jquery/dist/jquery.min.js'
-					'bower_components/jquery/dist/jquery.min.map'
-					'bower_components/oauth-js/dist/oauth.min.js'
-				]
+				src: vendor_scripts
 				dest: "<%= build_dir %>/lib/"
 
 		#

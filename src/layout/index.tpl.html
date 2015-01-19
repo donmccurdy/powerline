@@ -109,12 +109,15 @@
 			</div>
 		</footer>
 
-		<!-- scripts -->
-		<script src="./lib/jquery.min.js"></script>
-		<script src="./lib/lodash.min.js"></script>
-		<script src="./lib/eventify.min.js"></script>
-		<script src="./lib/oauth.min.js"></script>
+		<!-- vendor scripts -->
+		{{ _.forEach(vendor_scripts, function (script) {  }}
+			<script src="./lib/{{= script }}"></script>
+		{{ }) }}
+
+		<!-- templates -->
 		<script src="./assets/js/templates.js"></script>
+
+		<!-- application scripts -->
 		{{ if (process.env.NODE_ENV === 'DEVELOPMENT') { }}
 			{{ _.forEach(dev_scripts, function (script) { }}
 			<script src="./assets/js/.tmp/{{= script }}.js"></script>
@@ -123,6 +126,7 @@
 			<script src="./assets/js/powerline.js"></script>
 		{{ } }}
 
+		<!-- bootstrap -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 	</body>
 </html>

@@ -20,3 +20,6 @@ class List extends EventEmitter
 
 	bindEvents: () ->
 		console.log "bind events on List #{@id}"
+
+	count: () ->
+		@stream.count()

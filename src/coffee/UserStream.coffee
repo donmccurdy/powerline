@@ -2,10 +2,11 @@ class UserStream
 
 	@STREAM_ERROR = 'could not connect stream'
 
-	constructor: (@id, @name, @twitter) ->
+	constructor: (@id, @metadata, @twitter) ->
 		@localCursor = -1
 		@remoteCursor = -1
 		@users = []
+		@name = @metadata.name
 		@is_ready = $.Deferred()
 
 		if @id is 0
@@ -31,3 +32,6 @@ class UserStream
 			throw "can't access page #{@localCursor}"
 		else
 			@is_ready
+
+	count: () ->
+		@metadata.member_count

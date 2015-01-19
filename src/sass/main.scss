@@ -72,6 +72,11 @@ $listHeaderHeight: 40px;
 	height: $listHeaderHeight;
 	line-height: 44px;
 	padding-left: 5px;
+	.badge {
+		position: relative;
+		bottom: 4px;
+		background-color: $lightGrey;
+	}
 }
 
 .list {

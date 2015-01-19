@@ -1,4 +1,7 @@
 <section class="list-wrap">
-	<header class="list-title">{{- name }}</header>
+	<header class="list-title">
+		{{- name }}
+		<span class="badge">{{= count() }}</span>
+	</header>
 	<div class="list" data-id={{= id }}></div>
 </section>

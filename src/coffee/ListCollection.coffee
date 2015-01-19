@@ -20,7 +20,10 @@ class ListCollection extends EventEmitter
 		
 		# Following
 		has_friends = $.Deferred()
-		stream = new UserStream(0, 'Following', @twitter)
+		metadata =
+			name: 'Following'
+			member_count: @user.friends_count
+		stream = new UserStream(0, metadata, @twitter)
 		stream.ready().done =>
 			@lists.push(new List(stream))
 			has_friends.resolve()
@@ -65,11 +68,10 @@ class ListCollection extends EventEmitter
 		_(@lists).where(id: +listID).first()
 
 	push: (id) ->
-		name = _(@available_lists)
+		metadata = _(@available_lists)
 			.where(id: +id)
-			.pluck('name')
 			.first()
-		stream = new UserStream(id, name, @twitter)
+		stream = new UserStream(id, metadata, @twitter)
 		stream.ready().done =>
 			list = new List(stream)
 			@$collection.append list.render()

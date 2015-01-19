@@ -18,6 +18,7 @@ module.exports = (grunt) ->
 			'Keymap'
 			'List'
 			'ListCollection'
+			'Selection'
 			'TwitterConnect'
 			'UserStream'
 			'Bootstrap'
@@ -49,7 +50,7 @@ module.exports = (grunt) ->
 				options:
 					bare: true
 					sourceMap: true
-				src: 'src/coffee/*.coffee'
+				src: "<%= js_dir %>/.tmp/*.coffee"
 				dest: "<%= js_dir %>/.tmp/"
 				ext: '.js'
 
@@ -97,6 +98,11 @@ module.exports = (grunt) ->
 				options:
 					process: (content) ->
 						grunt.template.process(content, delimiters: 'handlebars')
+			dev:
+				expand: true
+				flatten: true
+				src: 'src/coffee/*.coffee'
+				dest: "<%= js_dir %>/.tmp/"
 			vendor:
 				expand: true
 				flatten: true
@@ -146,7 +152,7 @@ module.exports = (grunt) ->
 		watch:
 			js:
 				files: 'src/coffee/**/*.coffee'
-				tasks: ['coffee']
+				tasks: ['copy:dev', 'coffee:dev']
 			css:
 				files: 'src/sass/**/*.scss'
 				tasks: ['sass']
@@ -173,7 +179,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-env'
 
 	grunt.registerTask('common', ['clean', 'copy:main', 'copy:vendor', 'jst', 'sass'])
-	grunt.registerTask('dev', ['env:dev', 'common', 'coffee:dev', 'connect', 'watch'])
+	grunt.registerTask('dev', ['env:dev', 'common', 'copy:dev', 'coffee:dev', 'connect', 'watch'])
 	grunt.registerTask('prod', ['env:prod', 'common', 'coffee:dist', 'uglify'])
 	grunt.registerTask('default', ['prod'])
 

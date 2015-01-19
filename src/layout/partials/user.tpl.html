@@ -1,1 +1,4 @@
-<li class="user-name">{{- screen_name }}</li>
+<li class="user {{= selected ? 'selected' : '' }}" data-id={{= user.id }}>
+	<span class="user-name">{{- user.name }}</span> | 
+	<span class="user-screen-name">{{- user.screen_name }}</span>
+</li>

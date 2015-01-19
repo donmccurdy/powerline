@@ -3,8 +3,10 @@ class ListCollection extends EventEmitter
 	constructor: (user, twitter) ->
 		@$el = $('.collection-wrap')
 		@$select = null
+		@$collection = null
 		@user = user
 		@twitter = twitter
+		@selection = null
 		@lists = []
 		@available_lists = []
 		@init()
@@ -41,6 +43,25 @@ class ListCollection extends EventEmitter
 	bindEvents: () ->
 		@$select.on 'change', =>
 			@push(@$select.val())
+
+		self = @
+		@$collection.on 'click', '.user', (e) ->
+			$this = $(this)
+			userID = + $this.data 'id'
+			listID = + $this.closest('.list').data 'id'
+			self.onUserClick userID, listID
+
+	onUserClick: (userID, listID) ->
+		if @selection?.listID is listID
+			@selection.toggleUser userID
+		else
+			@selection?.trigger 'destroy'
+			@selection = new Selection(listID)
+			@selection.toggleUser userID
+			@getList(listID).setSelection(@selection)
+
+	getList: (listID) ->
+		_(@lists).where(id: +listID).first()
 
 	push: (id) ->
 		name = _(@available_lists)

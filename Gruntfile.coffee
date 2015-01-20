@@ -77,7 +77,9 @@ module.exports = (grunt) ->
 			options:
 				style: 'compressed'
 			main:
-				files: ["<%= css_dir %>/<%= pkg.name %>.css": 'src/sass/main.scss']
+				files:
+					"<%= css_dir %>/<%= pkg.name %>.css": 'src/sass/main.scss'
+					"<%= css_dir %>/autocomplete.css": 'src/sass/autocomplete.scss'
 
 		#
 		# JS MINIFICATION

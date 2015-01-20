@@ -1,0 +1,32 @@
+/* Variables
+*********************************/
+
+$bodyWhite: #ffffff;
+$bodyBlack: #444444;
+$lightGrey: #9d9d9d;
+$borderLight: #f0f0f0;
+$accent: #63BFB6;
+
+/* Vendor Prefixing
+*********************************/
+
+$VENDORS: webkit, moz, ms, o;
+ 
+@mixin vendor-prefix($property, $values...) {
+  @each $vendor in $VENDORS {
+    -#{$vendor}-#{$property}: $values;
+  }
+  #{$property}: $values;
+}
+
+@mixin border-radius($radius) {
+	@include vendor-prefix(border-radius, $radius);
+}
+
+@mixin box-shadow($args...) {
+	@include vendor-prefix(box-shadow, $args);
+}
+
+@mixin box-sizing($args...) {
+	@include vendor-prefix(box-sizing, $args);
+}

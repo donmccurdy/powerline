@@ -16,7 +16,8 @@ class ListCollection extends EventEmitter
 		# Lists
 		has_lists = $.Deferred()
 		@twitter.getLists().done (lists) =>
-			@available_lists = lists
+			@available_lists = _.sortBy lists, (l) ->
+				l.name.toUpperCase()
 			has_lists.resolve()
 		
 		# Following

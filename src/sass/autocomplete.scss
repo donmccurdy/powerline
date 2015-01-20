@@ -1,0 +1,72 @@
+@import "common";
+
+.asg-suggestions {
+	position: absolute;
+	z-index: 500000;
+	width: auto;
+	min-width: 200px;
+	max-height: 300px;
+	overflow-y: auto;
+	background-color: $bodyWhite;
+	border: 0px solid $borderLight;
+	border-bottom: 0px;
+	@include border-radius(5px);
+	cursor: pointer;
+
+	@include box-shadow(1px 1px 9px rgba(0,0,0,0.2));
+
+	.asg-ul {
+		display: table;
+		list-style: none;
+		padding: 0px;
+		margin: 0px;
+		min-width: 100%;
+	}
+
+	.asg-li {
+		padding: 0px;
+		margin: 0px;
+		display: table-row;
+
+		@include box-sizing(border-box);
+
+		&:hover,
+		&.sel {
+			background-color: $accent;
+
+			.asg-label {
+				color: $bodyWhite;
+			}
+		}
+	}
+
+	.asg-label {
+		display: table-cell;
+		padding: 5px;
+		color: $bodyBlack;
+		vertical-align: middle;
+		&:focus,
+		&:active {
+			outline: none;
+		}
+	}
+
+	.asg-img-wrap {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+		padding: 3px;
+	}
+
+	.asg-img {
+		max-width: 40px;
+		max-height: 30px;
+	}
+	&.left:after {
+		left: auto;
+		right: 20%;
+	}
+	&.asg-fixed {
+		position: fixed;
+	}
+}

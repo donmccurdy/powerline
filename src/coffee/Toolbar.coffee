@@ -11,7 +11,8 @@ class Toolbar extends EventEmitter
 		$asg = @el.find('.input-list-search').asg
 			delay: 20
 			minChars: 0
-			offsetTop: 16
+			offsetTop: 14
+			numToSuggest: 100
 			source: _.map @collection.available_lists, (list) ->
 				{key: list.id, value: list.name}
 			callback: =>

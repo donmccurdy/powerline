@@ -9,6 +9,7 @@ class ListCollection extends EventEmitter
 		@selection = null
 		@lists = []
 		@available_lists = []
+		@commandQueue = new CommandQueue(@)
 		@init()
 
 	init: () ->
@@ -31,6 +32,9 @@ class ListCollection extends EventEmitter
 		# Render
 		$.when(has_lists, has_friends).done => @render()
 
+	# Render
+	#######################################
+
 	render: () ->
 		# collection ui
 		@$el.html JST.collection(@)
@@ -49,20 +53,16 @@ class ListCollection extends EventEmitter
 			$this = $(this)
 			userID = + $this.data 'id'
 			listID = + $this.closest('.list').data 'id'
-			self.onUserClick userID, listID
+			self.select userID, listID
 
-	onUserClick: (userID, listID) ->
-		list = @getList listID
-		if @selection?.list.id is listID
-			@selection.toggleUser userID
-		else
-			@selection?.destroy()
-			@selection = new Selection(list)
-			list.setSelection @selection
-			@selection.toggleUser userID
+	# Getters / Setters
+	#######################################
 
 	getList: (listID) ->
 		_(@lists).where(id: +listID).first()
+
+	getUser: (userID) ->
+		@twitter.getUser userID
 
 	push: (id) ->
 		metadata = _(@available_lists)
@@ -76,5 +76,32 @@ class ListCollection extends EventEmitter
 			@$collection.append list.render()
 			@lists.push list
 
-	pluck: (property) ->
-		_.pluck @lists, property
+	# Selection Management
+	#######################################
+
+	select: (userID, listID) ->
+		list = @getList listID
+		if @selection?.list.id is listID
+			@selection.toggleUser userID
+		else
+			@selection?.destroy()
+			@selection = new Selection(list)
+			list.setSelection @selection
+			@selection.toggleUser userID
+
+	moveToList: (listID) ->
+		if @selection
+			cmd = new MoveCommand(@selection, @getList(listID))
+			@commandQueue.push cmd
+			@selection.destroy()
+
+	addToList: (listID) ->
+		if @selection
+			cmd = new AddCommand(@selection, @getList(listID))
+			@commandQueue.push cmd
+
+	removeFromList: () ->
+		if @selection
+			cmd = new RemoveCommand(@selection)
+			@commandQueue.push cmd
+			@selection.destroy()

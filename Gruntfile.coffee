@@ -32,6 +32,8 @@ module.exports = (grunt) ->
 			'List'
 			'ListCollection'
 			'Selection'
+			'Command'
+			'CommandQueue'
 			'Toolbar'
 			'TwitterConnect'
 			'UserStream'

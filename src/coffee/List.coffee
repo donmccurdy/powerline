@@ -6,6 +6,7 @@ class List extends EventEmitter
 		@el = $(JST.list(@))
 		@users = @stream.current()
 		@selection = null
+		@is_mutable = !!@id
 
 	render: () ->
 		rows = _.map @users, (user) =>
@@ -17,9 +18,24 @@ class List extends EventEmitter
 	setSelection: (selection) ->
 		@selection = selection
 		@selection.on 'destroy', => @selection = null
+		@
 
 	bindEvents: () ->
 		console.log "bind events on List #{@id}"
 
 	count: () ->
 		@stream.count()
+
+	add: (user) ->
+		if @is_mutable
+			@users.push user
+			console.log "User #{user.name} added to #{@name}"
+		@render()
+		@
+
+	remove: (user) ->
+		if @is_mutable
+			_.remove @users, id: user.id
+			console.log "User '#{user.name}' removed from #{@name}"
+		@render()
+		@

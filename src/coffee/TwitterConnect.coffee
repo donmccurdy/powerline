@@ -11,6 +11,7 @@
 class TwitterConnect
 
 	cache: new Cache()
+	users: {}
 	authResult: false
 	listeners:
 		ready: []
@@ -44,9 +45,24 @@ class TwitterConnect
 		@authResult = false
 
 	getCurrentUser: ->
-		return @cache.bind 'current-user', (deferred) =>
-			@authResult?.get('/1.1/account/verify_credentials.json').done (data) ->
+		$d = @cache.bind 'current-user', (deferred) =>
+			@authResult?.get('/1.1/account/verify_credentials.json').done (data) =>
 				deferred.resolve data
+		$d.done (data) => @cacheUsers [data]
+		$d
+
+	getUser: (userID) ->
+		if @users[userID]
+			@users[userID]
+		else
+			throw 'remote user fetching not implemented'
+
+	cacheUsers: (users) ->
+		_.defer =>
+			for user in users
+				@users[user.id] = user unless @users[user.id]
+					
+
 
 	getFriends: (cursor) ->
 		options = 
@@ -54,9 +70,11 @@ class TwitterConnect
 			count: 200 # max = 200, 15 / 15 min
 			skip_status: true
 			include_user_entities: false
-		return @cache.bind "friends-#{cursor}", (deferred) =>
-			@authResult.get('/1.1/friends/list.json?' + $.param(options)).done (data) ->
+		$d = @cache.bind "friends-#{cursor}", (deferred) =>
+			@authResult.get('/1.1/friends/list.json?' + $.param(options)).done (data) =>
 				deferred.resolve data
+		$d.done (data) => @cacheUsers data.users
+		$d
 
 	getLists: (cursor) ->
 		return @cache.bind "lists", (deferred) =>
@@ -70,6 +88,8 @@ class TwitterConnect
 			count: 200 # max = 5000, 180 / 15 min
 			skip_status: true
 			include_entities: false
-		return @cache.bind "list-#{listID}-#{cursor}", (deferred) =>
-			@authResult.get("/1.1/lists/members.json?" + $.param(options)).done (data) ->
+		$d = @cache.bind "list-#{listID}-#{cursor}", (deferred) =>
+			@authResult.get("/1.1/lists/members.json?" + $.param(options)).done (data) =>
 				deferred.resolve data
+		$d.done (data) => @cacheUsers data.users
+		$d

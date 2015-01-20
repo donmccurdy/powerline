@@ -54,6 +54,7 @@ class ListCollection extends EventEmitter
 			userID = + $this.data 'id'
 			listID = + $this.closest('.list').data 'id'
 			self.select userID, listID
+		@$el.on 'click', '.toolbar-remove', => @removeFromList()
 
 	# Getters / Setters
 	#######################################

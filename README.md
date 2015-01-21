@@ -22,14 +22,11 @@ Once you've downloaded the repository, run:
 ### Development
 
 ```bash
-	# Compile
-	grunt
+	# Compile resources for development and serve app to http://localhost:8000
+	grunt dev
 
-	# Watch for changes and recompile
-	grunt watch
-
-	# Serve app to http://localhost:8000
-	grunt connect
+	# Compile resources for production deployment
+	grunt prod
 
 	# Clear compilation output
 	grunt clean

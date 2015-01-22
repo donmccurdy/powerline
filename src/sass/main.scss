@@ -23,6 +23,18 @@ body {
 /* Page
 *********************************/
 
+.navbar {
+	.phase {
+		text-transform: uppercase;
+		font-weight: 300;
+		font-size: 0.7em;
+		vertical-align: top;
+		line-height: 1em;
+		position: relative;
+		top: 4px;
+	}
+}
+
 .footer {
 	height: 50px;
 	line-height: 50px;

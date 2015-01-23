@@ -28,7 +28,7 @@ class List extends EventEmitter
 
 	add: (user) ->
 		if @is_mutable
-			@users.push user
+			@users.unshift user
 			console.log "User #{user.name} added to #{@name}"
 		@render()
 		@

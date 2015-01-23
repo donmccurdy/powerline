@@ -61,6 +61,23 @@ $pageFooterHeight: 50px;
 	}
 }
 
+.btn-input-start + .dropdown-menu  {
+	
+	display: none;
+	&.focus { display: block; }
+
+	.dropdown-input,
+	.dropdown-input:focus {
+		border: none;
+		@include box-shadow(none);
+	}
+
+	.asg-ul {
+		margin: 0;
+		padding: 0;
+	}
+}
+
 /* Lists
 *********************************/
 

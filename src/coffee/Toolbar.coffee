@@ -22,6 +22,7 @@ class Toolbar extends EventEmitter
 			callback: =>
 				@collection.push asgSearch.get().key
 				asgSearch.clear()
+				$asgSearch.blur()
 		))
 		asgSearch = $asgSearch.data('asg')
 

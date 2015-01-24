@@ -18,9 +18,16 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" href="./assets/css/powerline.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-		<link rel="stylesheet" href="./assets/css/autocomplete.css">
+
+		{{ if (process.env.NODE_ENV === 'DEVELOPMENT') { }}
+			<link rel="stylesheet" href="./assets/css/powerline.css">
+			<link rel="stylesheet" href="./assets/css/autocomplete.css">
+		{{ } else { }}
+			<link rel="stylesheet" href="./assets/css/powerline.min.css">
+			<link rel="stylesheet" href="./assets/css/autocomplete.min.css">
+		{{ } }}
+
 	</head>
 	<body>
 
@@ -38,7 +45,7 @@
 					<div class="navbar-brand">
 						{{= pkg.title }}
 						<small>
-						<a href="http://github.com/donmccurdy/powerline">
+						<a href="{{= pkg.github }}">
 							<!-- TODO CHANGELOG */blob/v{{= pkg.version }}-release/CHANGELOG.md -->
 							v{{= pkg.version }} <span class="phase">Alpha</span>
 						</a>
@@ -121,7 +128,7 @@
 			<script src="./assets/js/.tmp/{{= script }}.js"></script>
 			{{ }) }}
 		{{ } else { }}
-			<script src="./assets/js/powerline.js"></script>
+			<script src="./assets/js/powerline.min.js"></script>
 		{{ } }}
 
 		<!-- bootstrap -->

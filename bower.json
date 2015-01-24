@@ -1,6 +1,5 @@
 {
   "name": "powerline",
-  "main": "index.js",
   "version": "0.1.1",
   "authors": [
     "Don McCurdy <don.r.mccurdy@gmail.com>"

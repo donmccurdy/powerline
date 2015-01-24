@@ -5,11 +5,11 @@ class List extends EventEmitter
 		@name = @stream.name
 		@el = $(JST.list(@))
 		@selection = null
-		@is_mutable = !!@id
+		@isMutable = !!@id
 
 		@users = @stream.current()
-		@users_added = []
-		@users_removed = []
+		@usersAdded = []
+		@usersRemoved = []
 
 	render: () ->
 		rows = _.map @getUsers(), (user) =>
@@ -30,37 +30,32 @@ class List extends EventEmitter
 		@stream.count()
 
 	getUsers: () ->
-		users = @users_added.concat(@users)
-		if _.size @users_removed
-			ids = _ users
+		users = @usersAdded.concat(@users)
+		if _.size @usersRemoved
+			skip = _ @usersRemoved
 				.pluck 'id'
-				.without _.pluck(@users_removed, 'id')
 				.invert()
 				.value()
-			users = _ pool
-				.filter (user) -> !!ids[user.id]
-				.value()
+			users = _.filter users, (u) -> !skip[u.id]
 		users
 
 	add: (user) ->
-		if @is_mutable and not @contains user
-			@users_added.unshift user
-			_.remove @users_removed, id: user.id
-			console.log "User #{user.name} added to #{@name}"
+		if @isMutable and not @contains user
+			unless _.any(@users, id: user.id)
+				@usersAdded.unshift user
+			else
+				_.remove @usersRemoved, id: user.id
 		@render()
 		@
 
 	remove: (user) ->
-		if @is_mutable and @contains user
-			_.remove @users, id: user.id
-			_.remove @users_added, id: user.id
-			console.log "User '#{user.name}' removed from #{@name}"
+		if @isMutable and @contains user
+			if _.any(@users, id: user.id)
+				@usersRemoved.push user
+			else 
+				_.remove @usersAdded, id: user.id
 		@render()
 		@
 
 	contains: (user) ->
-		if _.first(@users, id: user.id)
-			true
-		if _.first(@users_added, id: user.id)
-			true
-		false
+		_.any(@users, id: user.id) or _.any(@usersAdded, id: user.id)

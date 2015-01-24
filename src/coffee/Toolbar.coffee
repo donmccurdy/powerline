@@ -27,10 +27,10 @@ class Toolbar extends EventEmitter
 		asgSearch = $asgSearch.data('asg')
 
 		# add user to list
-		$asgAdd = @el.find('.dropdown-input-add').asg(_.merge(asg_options,
+		$asgAdd = @el.find('.dropdown-input[data-action=add]').asg(_.merge(asg_options,
 			staticPos: true
 			namespace: 'asg-static'
-			container: @el.find('.dropdown-input-add + .asg-ul')
+			container: @el.find('.dropdown-input-results[data-action=add]')
 			callback: =>
 				@collection.addToList asgAdd.get().key
 				asgAdd.clear()
@@ -39,7 +39,16 @@ class Toolbar extends EventEmitter
 		asgAdd = $asgAdd.data('asg')
 
 		# move user to list
-		# TODO
+		$asgMove = @el.find('.dropdown-input[data-action=move]').asg(_.merge(asg_options,
+			staticPos: true
+			namespace: 'asg-static'
+			container: @el.find('.dropdown-input-results[data-action=move]')
+			callback: =>
+				@collection.moveToList asgMove.get().key
+				asgMove.clear()
+				$asgMove.blur()
+		))
+		asgMove = $asgMove.data('asg')
 
 		# when an certain buttons are clicked, focus an input
 		@el.on 'click', '.btn-input-start', ->

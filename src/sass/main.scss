@@ -72,9 +72,18 @@ $pageFooterHeight: 50px;
 		@include box-shadow(none);
 	}
 
-	.asg-ul {
+	.dropdown-input-results {
 		margin: 0;
 		padding: 0;
+	}
+}
+
+.toolbar {
+	.btn ~ .btn {
+		margin-left: -1px;
+	}
+	.dropdown-menu ~ .dropdown-menu {
+		left: 70px;
 	}
 }
 

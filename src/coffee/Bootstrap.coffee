@@ -4,7 +4,7 @@ class Bootstrap
 	user: null,
 
 	constructor: () ->
-		@twitter = new TwitterConnect()
+		@twitter = new TwitterService()
 		@$header = $('.pline-header')
 		@friends = null
 		@collection = null

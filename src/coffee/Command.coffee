@@ -29,6 +29,8 @@ class Command extends EventEmitter
 # Add user(s) to a list.
 #
 class AddCommand extends Command
+	is_adder: true
+
 	constructor: (selection, dest) ->
 		super(selection)
 		@destListID = dest.id
@@ -45,22 +47,27 @@ class AddCommand extends Command
 # Remove user(s) from a list.
 #
 class RemoveCommand extends Command
+	is_remover: true
+
 	constructor: (selection) ->
 		super(selection)
-		@listID = selection.list.id
+		@srcListID = selection.list.id
 
 	execute: (collection) ->
-		@remove collection, collection.getList @listID
+		@remove collection, collection.getList @srcListID
 		super()
 
 	undo: (collection) ->
-		@add collection, collection.getList @listID
+		@add collection, collection.getList @srcListID
 		super()
 
 #
 # Move user(s) from one list to another.
 #
 class MoveCommand extends Command
+	is_remover: true
+	is_adder: true
+
 	constructor: (selection, dest) ->
 		super(selection)
 		@srcListID = selection.list.id

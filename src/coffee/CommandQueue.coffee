@@ -7,6 +7,7 @@
 #
 class CommandQueue
 	constructor: (@collection) ->
+		@finalized = []
 		@undoQueue = []
 		@redoQueue = []
 
@@ -19,3 +20,13 @@ class CommandQueue
 		cmd = @undoQueue.pop()
 		cmd.undo @collection
 		@redoQueue.push cmd
+
+	save: () ->
+		changes = new CommandAggregator(@collection.twitter, @undoQueue)
+		changes.apply()
+			.done =>
+				@finalized = @undoQueue
+				@undoQueue = []
+				@redoQueue = []
+			.fail ->
+				console.log "Could not save changes"

@@ -107,3 +107,9 @@ class ListCollection extends EventEmitter
 			cmd = new RemoveCommand(@selection)
 			@commandQueue.push cmd
 			@selection.destroy()
+
+	# Save Changes
+	#######################################
+
+	save: () ->
+		@commandQueue.save()

@@ -8,7 +8,7 @@
 # 	interactions, so most of that will probably
 # 	need to be located elsewhere.
 #
-class TwitterConnect
+class TwitterService
 
 	cache: new Cache()
 	users: {}
@@ -92,4 +92,22 @@ class TwitterConnect
 			@authResult.get("/1.1/lists/members.json?" + $.param(options)).done (data) =>
 				deferred.resolve data
 		$d.done (data) => @cacheUsers data.users
+		$d
+
+	addListMembers: (listID, userIDs) ->
+		$d = $.Deferred()
+		@authResult.post "/1.1/lists/members/create_all.json",
+				list_id: listID
+				user_id: userIDs
+			.done -> $d.resolve()
+			.fail -> $d.reject()
+		$d
+
+	removeListMembers: (listID, userIDs) ->
+		$d = $.Deferred()
+		@authResult.post "/1.1/lists/members/destroy_all.json",
+				list_id: listID
+				user_id: userIDs
+			.done -> $d.resolve()
+			.fail -> $d.reject()
 		$d

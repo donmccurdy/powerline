@@ -1,36 +1,30 @@
 class CommandAggregator extends EventEmitter
 
-	SAVE_INTERVAL: 90 # seconds
-	SAVE_PADDING: 5 # lists
+	constructor: (@twitter, @queue) ->
+		@additions = {}
+		@removals = {}
+		@init()
 
-	constructor: (@collection) ->
-		delay = (t, cbk) -> setTimeout cbk, t
-		delay SAVE_INTERVAL, => @batch()
+	init: () ->
+		for cmd in @queue
+			if cmd.is_adder
+				@add cmd.destListID, cmd.userIDs
+			if cmd.is_remover
+				@remove cmd.srcListID, cmd.userIDs
 
-	batch: () ->
-		if stillWaitingOnBatch? then return
+	add: (listID, userIDs) ->
+		unless @additions[listID]
+			@additions[listID] = []
+		@additions[listID] = _.union(@additions[listID], userIDs)
 
-		list = _ @collection.lists
-			.filter (l) -> l.isModified()
-			.sortBy (l) -> l.lastModified
-			.first()
+	remove: (listID, userIDs) ->
+		unless @removals[listID]
+			@removals[listID] = []
+		@removals[listID] = _.union(@removals[listID], userIDs)
 
-		unless list then return
-
-		commands = @getCommandsByListID(list.id)
-		@execute(commands)
-
-	execute: (commands) ->
-		doThing() # todo
-			.done ->
-				# remove from queue
-				# list.setModified(false) / list.save()
-				console.log 'success'
-			.fail ->
-				# leave in queue
-				console.log 'eeeeek'
-		@
-
-	getCommandsByListID: (listID) ->
-		[] # todo
-
+	apply: (commands) ->
+		for own listID, additions of @additions
+			console.log "Adding " + additions.join(',') + " to #{listID}"
+		for own listID, removals of @removals
+			console.log "Removing " + removals.join(',') + " from #{listID}"
+		$.Deferred().resolve()

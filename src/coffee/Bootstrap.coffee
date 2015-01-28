@@ -35,4 +35,4 @@ class Bootstrap
 
 	render: () ->
 		$('.navbar-right').html JST['navbar-right'](user: @user)
-		$('.footer').html JST['footer']()
+		$('.footer').html JST['footer'](user: @user)

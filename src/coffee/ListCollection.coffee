@@ -2,6 +2,7 @@ class ListCollection extends EventEmitter
 
 	constructor: (user, twitter) ->
 		@$el = $('.collection-wrap')
+		@$footer = $('.footer')
 		@$collection = null
 		@user = user
 		@twitter = twitter
@@ -40,7 +41,7 @@ class ListCollection extends EventEmitter
 		# collection ui
 		@$el.html JST.collection(@)
 		@$collection = @$el.find('.collection')
-		@toolbar = new Toolbar(@$el.find('.toolbar'), @)
+		@toolbar = new Toolbar(@$el.find('.toolbar'), @$footer, @)
 
 		# lists
 		elements = _.map @lists, (list) -> list.render()

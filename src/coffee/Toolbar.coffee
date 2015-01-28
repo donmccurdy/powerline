@@ -1,6 +1,6 @@
 class Toolbar extends EventEmitter
 
-	constructor: (@el, @collection) ->
+	constructor: (@el, @footer, @collection) ->
 		@bindEvents()
 
 	setLists: (lists) ->
@@ -56,3 +56,6 @@ class Toolbar extends EventEmitter
 			$menu.find '.dropdown-input'
 				.focus()
 				.one 'blur', -> delay(200, -> $menu.removeClass 'focus' )
+
+		# save button in footer
+		@footer.on 'click', '.toolbar-save', => @collection.save()

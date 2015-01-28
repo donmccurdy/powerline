@@ -23,8 +23,7 @@ class CommandAggregator extends EventEmitter
 		@removals[listID] = _.union(@removals[listID], userIDs)
 
 	apply: (commands) ->
-		for own listID, additions of @additions
-			console.log "Adding " + additions.join(',') + " to #{listID}"
-		for own listID, removals of @removals
-			console.log "Removing " + removals.join(',') + " from #{listID}"
-		$.Deferred().resolve()
+		add_results = _.map @additions, (userIDs, listID) => @twitter.addListMembers(listID, userIDs)
+		del_results = _.map @removals, (userIDs, listID) => @twitter.removeListMembers(listID, userIDs)
+		results = add_results.concat add_results, del_results
+		$.when.apply $ results

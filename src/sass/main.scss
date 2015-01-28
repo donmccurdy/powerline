@@ -38,6 +38,14 @@ body {
 .footer {
 	height: 50px;
 	line-height: 50px;
+
+	// Not sure why the columns aren't working, but here:
+	.col-md-8 {
+		float: left;
+	}
+	.col-md-4 {
+		float: right;
+	}
 }
 
 /* Collection

@@ -30,3 +30,4 @@ class CommandQueue
 				@redoQueue = []
 			.fail ->
 				console.log "Could not save changes"
+				console.log arguments

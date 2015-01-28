@@ -97,8 +97,9 @@ class TwitterService
 	addListMembers: (listID, userIDs) ->
 		$d = $.Deferred()
 		@authResult.post "/1.1/lists/members/create_all.json",
-				list_id: listID
-				user_id: userIDs
+				data:
+					list_id: listID
+					user_id: userIDs.join(',')
 			.done -> $d.resolve()
 			.fail -> $d.reject()
 		$d
@@ -106,8 +107,9 @@ class TwitterService
 	removeListMembers: (listID, userIDs) ->
 		$d = $.Deferred()
 		@authResult.post "/1.1/lists/members/destroy_all.json",
-				list_id: listID
-				user_id: userIDs
+				data:
+					list_id: listID
+					user_id: userIDs.join(',')
 			.done -> $d.resolve()
 			.fail -> $d.reject()
 		$d

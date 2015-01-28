@@ -34,4 +34,5 @@ class Bootstrap
 		@login() # Log in automatically, if possible
 
 	render: () ->
-		$('.navbar-right').html(JST['navbar-right'](user: @user))
+		$('.navbar-right').html JST['navbar-right'](user: @user)
+		$('.footer').html JST['footer']()

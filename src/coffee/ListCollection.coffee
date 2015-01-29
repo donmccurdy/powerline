@@ -55,7 +55,7 @@ class ListCollection extends EventEmitter
 			$this = $(this)
 			userID = + $this.data 'id'
 			listID = + $this.closest('.list').data 'id'
-			self.select userID, listID, !(e.ctrlKey or e.metaKey)
+			self.select userID, listID, !(e.ctrlKey or e.metaKey), e.shiftKey
 		@$el.on 'click', '.toolbar-remove', => @removeFromList()
 
 	# Getters / Setters
@@ -82,15 +82,25 @@ class ListCollection extends EventEmitter
 	# Selection Management
 	#######################################
 
-	select: (userID, listID, reset) ->
+	select: (userID, listID, reset, range) ->
 		list = @getList listID
-		if @selection?.list.id is listID
-			@selection.toggleUser userID, reset
+
+		if range and listID is @lastSelectListID and @selection?.contains @lastSelectUserID
+			# Range selection
+			users = list.getUsersInRange @lastSelectUserID, userID
+			@selection.set _.pluck(users, 'id')
 		else
-			@selection?.destroy()
-			@selection = new Selection(list)
-			list.setSelection @selection
-			@selection.toggleUser userID
+			# Individual selection
+			if @selection?.list.id is listID
+				@selection.toggleUser userID, reset
+			else
+				@selection?.destroy()
+				@selection = new Selection(list)
+				list.setSelection @selection
+				@selection.toggleUser userID
+			@lastSelectUserID = userID
+			@lastSelectListID = listID
+		@
 
 	moveToList: (listID) ->
 		if @selection

@@ -5,15 +5,20 @@ class Selection extends EventEmitter
 
 	toggleUser: (userID, reset = false) ->
 		if _.contains @userIDs, userID
-			if reset
-				@userIDs = []
+			if reset and @userIDs.length > 1
+				@userIDs = [userID]
 			else
-				_.remove @userIDs, userID
+				@userIDs = _.without @userIDs, userID
 		else
 			if reset
 				@userIDs = [userID]
 			else
 				@userIDs.push userID
+		@trigger 'change'
+		@render()
+
+	set: (userIDs) ->
+		@userIDs = userIDs
 		@trigger 'change'
 		@render()
 

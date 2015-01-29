@@ -30,3 +30,7 @@ $VENDORS: webkit, moz, ms, o;
 @mixin box-sizing($args...) {
 	@include vendor-prefix(box-sizing, $args);
 }
+
+@mixin user-select($args...) {
+	@include vendor-prefix(user-select, $args);
+}

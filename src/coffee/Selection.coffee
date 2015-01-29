@@ -29,7 +29,7 @@ class Selection extends EventEmitter
 		hash = _.invert @userIDs
 		size = _.size @userIDs
 		ids = []
-		for user in @list.users
+		for user in @list.getUsers()
 			if hash[user.id]
 				ids.push user.id
 			if size is ids.length

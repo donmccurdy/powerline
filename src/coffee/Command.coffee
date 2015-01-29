@@ -16,7 +16,7 @@ class Command extends EventEmitter
 		@
 
 	add: (collection, list) ->
-		for userID in @userIDs
+		for userID in @userIDs.reverse()
 			user = collection.getUser userID
 			list.add user
 

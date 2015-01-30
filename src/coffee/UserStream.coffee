@@ -38,4 +38,4 @@ class UserStream
 			@is_ready
 
 	count: () ->
-		@metadata.member_count
+		@users.length

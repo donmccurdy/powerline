@@ -3,18 +3,18 @@ class List extends EventEmitter
 	constructor: (@stream) ->
 		@id = +@stream.id
 		@name = @stream.name
-		@el = $(JST.list(@))
-		@selection = null
-		@isMutable = !!@id
-
 		@users = @stream.current()
 		@usersAdded = []
 		@usersRemoved = []
+		@selection = null
+		@isMutable = !!@id
+		@el = $(JST.list(@))
 
 	render: () ->
 		rows = _.map @getUsers(), (user) =>
 			JST.user(user: user, selected: @selection?.contains user.id)
-		@el.find('.list').html rows.join('')
+		@el.html $(JST.list(@)).children()
+			.find('.list').html rows.join('')
 		@bindEvents()
 		@el
 
@@ -27,7 +27,7 @@ class List extends EventEmitter
 		console.log "bind events on List #{@id}"
 
 	count: () ->
-		@stream.count()
+		@stream.count() + @usersAdded.length - @usersRemoved.length
 
 	getUsers: () ->
 		users = @usersAdded.concat(@users)

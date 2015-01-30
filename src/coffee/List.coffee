@@ -70,5 +70,25 @@ class List extends EventEmitter
 		@render()
 		@
 
+	reload: () ->
+		deferred = $.Deferred().done =>
+			@users = @stream.current()
+			@usersAdded = []
+			@usersRemoved = []
+			@render()
+		@stream.reload(deferred)
+		deferred
+
+	debug: () ->
+		console.group 'Users'
+		console.log _.pluck(@users, 'name')
+		console.groupEnd()
+		console.group 'Added'
+		console.log _.pluck(@usersAdded, 'name')
+		console.groupEnd()
+		console.group 'Removed'
+		console.log _.pluck(@usersRemoved, 'name')
+		console.groupEnd()
+
 	contains: (user) ->
 		_.any(@users, id: user.id) or _.any(@usersAdded, id: user.id)

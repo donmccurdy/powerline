@@ -124,3 +124,13 @@ class ListCollection extends EventEmitter
 
 	save: () ->
 		@commandQueue.save()
+
+	# Debugging
+	#######################################
+
+	debug: () ->
+		for list in @lists
+			unless list.id then continue
+			console.group list.name
+			list.debug()
+			console.groupEnd()

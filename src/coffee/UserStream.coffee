@@ -8,18 +8,22 @@ class UserStream
 		@users = []
 		@name = @metadata.name
 		@is_ready = $.Deferred()
+		@reload @is_ready, false
 
+
+	reload: (deferred, noCache = true) ->
+		@remoteCursor = -1
 		if @id is 0
-			resource = @twitter.getFriends(@remoteCursor)
+			resource = @twitter.getFriends @remoteCursor, noCache
 		else
-			resource = @twitter.getListMembers(@id, @remoteCursor)
+			resource = @twitter.getListMembers @id, @remoteCursor, noCache
 
 		resource
 			.done (data) =>
 				@remoteCursor = data.next_cursor
 				@users = data.users
-				@is_ready.resolve(@users)
-			.fail => throw @STREAM_ERROR
+				deferred?.resolve @users
+			.fail => deferred?.reject @STREAM_ERROR
 
 	ready: () ->
 		@is_ready

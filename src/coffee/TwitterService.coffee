@@ -76,18 +76,20 @@ class TwitterService
 		$d.done (data) => @cacheUsers data.users
 		$d
 
-	getLists: (cursor) ->
-		return @cache.bind "lists", (deferred) =>
-			@authResult.get('/1.1/lists/list.json?' + $.param(reverse: true)).done (data) ->
-				deferred.resolve data
+	getLists: (clear = false) ->
+		if clear then @cache.clear 'lists'
+		return @cache.bind 'lists', (deferred) =>
+			@authResult.get('/1.1/lists/ownerships.json?' + $.param(count: 100)).done (data) ->
+				deferred.resolve data.lists
 
-	getListMembers: (listID, cursor) ->
+	getListMembers: (listID, cursor, clear = false) ->
 		options =
 			list_id: listID
 			cursor: cursor
 			count: 200 # max = 5000, 180 / 15 min
 			skip_status: true
 			include_entities: false
+		if clear then @cache.clear "list-#{listID}-#{cursor}"
 		$d = @cache.bind "list-#{listID}-#{cursor}", (deferred) =>
 			@authResult.get("/1.1/lists/members.json?" + $.param(options)).done (data) =>
 				deferred.resolve data

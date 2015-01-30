@@ -22,8 +22,11 @@ class CommandAggregator extends EventEmitter
 			@removals[listID] = []
 		@removals[listID] = _.union(@removals[listID], userIDs)
 
+	getListIDs: () ->
+		_.union _.keys(@additions), _.keys(@removals)
+
 	apply: (commands) ->
 		add_results = _.map @additions, (userIDs, listID) => @twitter.addListMembers(listID, userIDs)
 		del_results = _.map @removals, (userIDs, listID) => @twitter.removeListMembers(listID, userIDs)
 		results = add_results.concat add_results, del_results
-		$.when.apply $ results
+		$.when.apply $, results

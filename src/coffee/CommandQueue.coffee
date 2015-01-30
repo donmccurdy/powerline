@@ -28,6 +28,12 @@ class CommandQueue
 				@finalized = @undoQueue
 				@undoQueue = []
 				@redoQueue = []
+				@reload(changes.getListIDs())
 			.fail ->
 				console.log "Could not save changes"
 				console.log arguments
+
+	reload: (listIDs) ->
+		for listID in listIDs
+			list = @collection.getList listID
+			list.reload()

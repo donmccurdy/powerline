@@ -96,10 +96,16 @@ class ListCollection extends EventEmitter
 			else
 				@selection?.destroy()
 				@selection = new Selection(list)
+				@selection.on 'destroy', =>
+					@selection = null
+					@trigger 'select'
 				list.setSelection @selection
 				@selection.toggleUser userID
+
 			@lastSelectUserID = userID
 			@lastSelectListID = listID
+
+		@trigger 'select'
 		@
 
 	moveToList: (listID) ->

@@ -22,6 +22,9 @@ class Selection extends EventEmitter
 		@trigger 'change'
 		@render()
 
+	count: () ->
+		_.size @userIDs
+
 	contains: (userID) ->
 		_.contains @userIDs, userID
 

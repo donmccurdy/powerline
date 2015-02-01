@@ -59,3 +59,9 @@ class Toolbar extends EventEmitter
 
 		# save button in footer
 		@footer.on 'click', '.toolbar-save', => @collection.save()
+
+		# when selection changes, update add/move/remove buttons
+		@collection.on 'select',  =>
+			$('.toolbar-add').prop 'disabled', !@collection.selection?.count()
+			$('.toolbar-move, .toolbar-remove').prop 'disabled',
+				!@collection.selection?.list.isMutable

@@ -131,6 +131,9 @@ $listHeaderHeight: 40px;
 			top: 4px;
 		}
 	}
+	.dropdown-menu {
+		min-width: 0;
+	}
 }
 
 .list-title {

@@ -9,7 +9,7 @@ class ListCollection extends EventEmitter
 		@toolbar = null
 		@selection = null
 		@lists = []
-		@available_lists = []
+		@availableLists = []
 		@commandQueue = new CommandQueue(@)
 		@init()
 
@@ -17,7 +17,7 @@ class ListCollection extends EventEmitter
 		# Lists
 		has_lists = $.Deferred()
 		@twitter.getLists().done (lists) =>
-			@available_lists = _.sortBy lists, (l) ->
+			@availableLists = _.sortBy lists, (l) ->
 				l.name.toUpperCase()
 			has_lists.resolve()
 		
@@ -68,7 +68,7 @@ class ListCollection extends EventEmitter
 		@twitter.getUser userID
 
 	push: (id) ->
-		metadata = _(@available_lists)
+		metadata = _(@availableLists)
 			.where(id: +id)
 			.first()
 		unless metadata
@@ -127,6 +127,15 @@ class ListCollection extends EventEmitter
 
 	# Save Changes
 	#######################################
+
+	update: (listChanges) ->
+		list = @getList listChanges.id
+		if list
+			list.update(listChanges)
+		else
+			@availableLists.push listChanges
+			@availableLists = _.sortBy @availableLists, (l) ->
+				l.name.toUpperCase()
 
 	save: () ->
 		@commandQueue.save()

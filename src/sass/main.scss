@@ -132,6 +132,18 @@ $listHeaderHeight: 40px;
 	margin: 0;
 }
 
+/* List Form
+*********************************/
+
+input[type=radio]:not(:checked) ~ .glyphicon {
+	display: none;
+}
+
+.save-error {
+	display: none;
+	.exception & { display: block; }
+}
+
 /* Users
 *********************************/
 

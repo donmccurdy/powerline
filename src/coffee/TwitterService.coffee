@@ -97,21 +97,29 @@ class TwitterService
 		$d
 
 	addListMembers: (listID, userIDs) ->
-		$d = $.Deferred()
-		@authResult.post "/1.1/lists/members/create_all.json",
+		@authResult.post '/1.1/lists/members/create_all.json',
 				data:
 					list_id: listID
 					user_id: userIDs.join(',')
-			.done -> $d.resolve()
-			.fail -> $d.reject()
-		$d
 
 	removeListMembers: (listID, userIDs) ->
-		$d = $.Deferred()
-		@authResult.post "/1.1/lists/members/destroy_all.json",
+		@authResult.post '/1.1/lists/members/destroy_all.json',
 				data:
 					list_id: listID
 					user_id: userIDs.join(',')
-			.done -> $d.resolve()
-			.fail -> $d.reject()
-		$d
+
+	upsertList: (metadata) ->
+		@cache.clear 'lists'
+		if metadata.id
+			@authResult.post '/1.1/lists/update.json',
+				data:
+					list_id: metadata.id
+					name: metadata.name
+					mode: metadata.mode
+					description: metadata.description
+		else
+			@authResult.post '/1.1/lists/create.json',
+				data:
+					name: metadata.name
+					mode: metadata.mode
+					description: metadata.description

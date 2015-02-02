@@ -30,6 +30,7 @@ module.exports = (grunt) ->
 			'Cache'
 			'Keymap'
 			'List'
+			'ListForm'
 			'ListCollection'
 			'Selection'
 			'Command'

@@ -11,7 +11,7 @@ class Toolbar extends EventEmitter
 			delay: 20
 			minChars: 0
 			numToSuggest: 100
-			source: _.map @collection.available_lists, (list) ->
+			source: _.map @collection.availableLists, (list) ->
 				{key: list.id, value: list.name}
 
 		delay = (t, f) -> _.delay f, t
@@ -65,3 +65,8 @@ class Toolbar extends EventEmitter
 			$('.toolbar-add').prop 'disabled', !@collection.selection?.count()
 			$('.toolbar-move, .toolbar-remove').prop 'disabled',
 				!@collection.selection?.list.isMutable
+
+		# create new list
+		@el.on 'click', '.toolbar-create', =>
+			listForm = new ListForm(@collection.twitter)
+			listForm.on 'save', (list) => @collection.update list

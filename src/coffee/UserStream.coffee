@@ -7,8 +7,9 @@ class UserStream
 		@remoteCursor = -1
 		@users = []
 		@name = @metadata.name
-		@is_ready = $.Deferred()
-		@reload @is_ready, false
+		@mode = @metadata.mode
+		@isReady = $.Deferred()
+		@reload @isReady, false
 
 
 	reload: (deferred, noCache = true) ->
@@ -26,7 +27,7 @@ class UserStream
 			.fail => deferred?.reject @STREAM_ERROR
 
 	ready: () ->
-		@is_ready
+		@isReady
 
 	current: () ->
 		@users
@@ -35,7 +36,7 @@ class UserStream
 		if @localCursor >= 0
 			throw "can't access page #{@localCursor}"
 		else
-			@is_ready
+			@isReady
 
 	count: () ->
 		@users.length

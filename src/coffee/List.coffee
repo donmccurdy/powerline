@@ -79,6 +79,11 @@ class List extends EventEmitter
 		@stream.reload(deferred)
 		deferred
 
+	update: (metadata) ->
+		@name = metadata.name
+		@mode = metadata.mode
+		@description = metadata.description
+
 	debug: () ->
 		console.group 'Users'
 		console.log _.pluck(@users, 'name')

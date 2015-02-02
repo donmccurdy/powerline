@@ -16,16 +16,29 @@ class ListForm extends EventEmitter
 		@el.on 'hidden.bs.modal', => @close()
 
 	close: () ->
-		@el.remove()
-		@trigger 'destroy'
+		@el.modal 'hide'
+		_.delay ( =>
+				@el.remove()
+				@trigger 'destroy'
+			),
+			500
 
 	save: () ->
 		@metadata.name = @el.find('.name').val()
 		@metadata.description = @el.find('.description').val()
 		@metadata.mode = @el.find('input[name=mode]:checked').val()
+		if @validate()
+			@twitter.upsertList @metadata
+				.done (list) =>
+					@trigger 'save', list
+					@close()
+				.fail => @el.addClass 'exception'
+		else
+			$.Deferred().reject()
 
-		@twitter.upsertList @metadata
-			.done (list) =>
-				@trigger 'save', list
-				@close()
-			.fail => @el.addClass 'exception'
+	validate: () ->
+		unless @metadata.name
+			@el.find('.name-group').addClass 'has-error'
+			false
+		else
+			true

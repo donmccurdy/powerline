@@ -15,7 +15,7 @@
     "management"
   ],
   "license": "MIT",
-  "homepage": "https://www.donmccurdy.com/powerline",
+  "homepage": "https://powerline.io",
   "private": true,
   "ignore": [
     "**/.*",

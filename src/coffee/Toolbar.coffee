@@ -64,9 +64,12 @@ class Toolbar extends EventEmitter
 		@collection.on 'select',  =>
 			$('.toolbar-add').prop 'disabled', !@collection.selection?.count()
 			$('.toolbar-move, .toolbar-remove').prop 'disabled',
-				!@collection.selection?.list.isMutable
+				!@collection.selection?.list.isMutable or !@collection.selection?.count()
 
 		# create new list
 		@el.on 'click', '.toolbar-create', =>
 			listForm = new ListForm(@collection.twitter)
 			listForm.on 'save', (list) => @collection.update list
+
+		# bind tooltips
+		@el.find('[data-toggle="tooltip"]').tooltip(delay: show: 1000, hide: 0)

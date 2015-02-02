@@ -47,14 +47,19 @@ body {
 /* Collection
 *********************************/
 
-$pageHeaderHeight: 160px;
+$pageHeaderHeight: 123px;
 $pageFooterHeight: 50px;
+$toolbarHeight: 37px;
 
 .collection {
 	white-space: nowrap;
 	width: 100%;
-	height: calc(100vh - #{$pageHeaderHeight} - #{$pageFooterHeight});
+	height: calc(100vh - #{$pageHeaderHeight} - #{$pageFooterHeight} - #{$toolbarHeight});
 	overflow-x: auto;
+}
+
+.collection-wrap {
+	height: calc(100vh - #{$pageHeaderHeight});
 }
 
 .toolbar .input-group {
@@ -112,6 +117,20 @@ $listHeaderHeight: 40px;
 	& + .list-wrap {
 		margin-left: 5px;
 	}
+
+	.nav {
+		display: inline-block;
+		position: absolute;
+		right: 0;
+	}
+	.dropdown-toggle {
+		padding-top: 0;
+		padding-bottom: 0;
+		.glyphicon {
+			color: $bodyBlack;
+			top: 4px;
+		}
+	}
 }
 
 .list-title {
@@ -119,11 +138,7 @@ $listHeaderHeight: 40px;
 	height: $listHeaderHeight;
 	line-height: 44px;
 	padding-left: 5px;
-	.badge {
-		position: relative;
-		bottom: 4px;
-		background-color: $lightGrey;
-	}
+	position: relative;
 }
 
 .list {

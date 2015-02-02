@@ -64,20 +64,24 @@ class ListCollection extends EventEmitter
 	getList: (listID) ->
 		_(@lists).where(id: +listID).first()
 
+	addList: (listID) ->
+		metadata = _(@availableLists)
+			.where(id: +listID)
+			.first()
+		unless metadata
+			throw "No such list: #{listID}"
+		stream = new UserStream(listID, metadata, @twitter)
+		stream.ready().done =>
+			@push new List(stream)
+
 	getUser: (userID) ->
 		@twitter.getUser userID
 
-	push: (id) ->
-		metadata = _(@availableLists)
-			.where(id: +id)
-			.first()
-		unless metadata
-			throw "No such list: #{id}"
-		stream = new UserStream(id, metadata, @twitter)
-		stream.ready().done =>
-			list = new List(stream)
-			@$collection.append list.render()
-			@lists.push list
+	push: (list) ->
+		@$collection.append list.render()
+		@lists.push list
+		list.on 'destroy', =>
+			_.remove @lists, (l) -> l.id is list.id
 
 	# Selection Management
 	#######################################
@@ -128,6 +132,12 @@ class ListCollection extends EventEmitter
 	# Save Changes
 	#######################################
 
+	save: () ->
+		@commandQueue.save()
+
+	# List Management
+	#######################################
+
 	update: (listChanges) ->
 		list = @getList listChanges.id
 		if list
@@ -136,9 +146,6 @@ class ListCollection extends EventEmitter
 			@availableLists.push listChanges
 			@availableLists = _.sortBy @availableLists, (l) ->
 				l.name.toUpperCase()
-
-	save: () ->
-		@commandQueue.save()
 
 	# Debugging
 	#######################################

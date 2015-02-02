@@ -20,7 +20,7 @@ class Toolbar extends EventEmitter
 		$asgSearch = @el.find('.input-list-search').asg(_.merge(asg_options,
 			offsetTop: 14
 			callback: =>
-				@collection.push asgSearch.get().key
+				@collection.addList asgSearch.get().key
 				asgSearch.clear()
 				$asgSearch.blur()
 		))

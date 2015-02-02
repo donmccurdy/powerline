@@ -3,6 +3,8 @@ class List extends EventEmitter
 	constructor: (@stream) ->
 		@id = +@stream.id
 		@name = @stream.name
+		@mode = @stream.mode
+		@description = @stream.description
 		@users = @stream.current()
 		@usersAdded = []
 		@usersRemoved = []
@@ -24,7 +26,13 @@ class List extends EventEmitter
 		@
 
 	bindEvents: () ->
-		console.log "bind events on List #{@id}"
+		@el.on 'click', '.list-edit', =>
+			form = new ListForm(@stream.twitter, @)
+			form.on 'save', (metadata) => @update metadata
+		@el.on 'click', '.list-remove', =>
+			console.log 'list deletion not implemented'
+		@el.on 'click', '.list-hide', => @destroy()
+
 
 	count: () ->
 		@stream.count() + @usersAdded.length - @usersRemoved.length
@@ -83,6 +91,12 @@ class List extends EventEmitter
 		@name = metadata.name
 		@mode = metadata.mode
 		@description = metadata.description
+		@render()
+		@
+
+	destroy: () ->
+		@el.remove()
+		@trigger 'destroy'
 
 	debug: () ->
 		console.group 'Users'

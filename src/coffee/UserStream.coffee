@@ -8,6 +8,7 @@ class UserStream
 		@users = []
 		@name = @metadata.name
 		@mode = @metadata.mode
+		@description = @metadata.description
 		@isReady = $.Deferred()
 		@reload @isReady, false
 

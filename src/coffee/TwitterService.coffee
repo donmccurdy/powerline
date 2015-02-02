@@ -123,3 +123,9 @@ class TwitterService
 					name: metadata.name
 					mode: metadata.mode
 					description: metadata.description
+
+	removeList: (listID) ->
+		@cache.clear 'lists'
+		@authResult.post '/1.1/lists/destroy.json',
+			data:
+				list_id: listID

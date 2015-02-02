@@ -29,10 +29,12 @@ class List extends EventEmitter
 		@el.on 'click', '.list-edit', =>
 			form = new ListForm(@stream.twitter, @)
 			form.on 'save', (metadata) => @update metadata
-		@el.on 'click', '.list-remove', =>
-			console.log 'list deletion not implemented'
 		@el.on 'click', '.list-hide', => @destroy()
-
+		@el.on 'click', '.list-remove', =>
+			@stream.remove()
+				.done => @destroy()
+				.fail => console.log "could not delete list #{@id}"
+		@
 
 	count: () ->
 		@stream.count() + @usersAdded.length - @usersRemoved.length

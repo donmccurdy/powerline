@@ -41,3 +41,6 @@ class UserStream
 
 	count: () ->
 		@users.length
+
+	remove: () ->
+		@twitter.removeList @id

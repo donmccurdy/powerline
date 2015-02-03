@@ -2,9 +2,10 @@ class Selection extends EventEmitter
 
 	constructor: (@list) ->
 		@userIDs = []
+		@on 'change', => @render()
 
 	toggleUser: (userID, reset = false) ->
-		if _.contains @userIDs, userID
+		if @contains userID
 			if reset and @userIDs.length > 1
 				@userIDs = [userID]
 			else
@@ -15,12 +16,17 @@ class Selection extends EventEmitter
 			else
 				@userIDs.push userID
 		@trigger 'change'
-		@render()
+
+	addUser: (userID, reset = false) ->
+		unless @contains userID
+			if reset then @userIDs = [userID]
+			else @userIDs.push userID
+		@trigger 'change'
+		@
 
 	set: (userIDs) ->
 		@userIDs = userIDs
 		@trigger 'change'
-		@render()
 
 	count: () ->
 		_.size @userIDs

@@ -2,22 +2,24 @@
 	<div class="panel-body">
 		<div class="btn-group">
 			<button type="button" disabled class="btn btn-default btn-input-start toolbar-add"
+				data-action="add" 
 				data-toggle="tooltip" data-placement="bottom" title="Add selected users to a list.">
 				<i class="glyphicon glyphicon-tag" aria-hidden="true"></i>
 				Add
 			</button>
-			<div class="dropdown-menu" role="menu">
+			<div class="dropdown-menu" role="menu" data-action="add" >
 				<input type="text" class="form-control dropdown-input"
 					data-action="add"
 					placeholder="Add to List">
 				<ul class="dropdown-input-results" data-action="add"></ul>
 			</div>
 			<button type="button" disabled class="btn btn-default btn-input-start toolbar-move"
+				data-action="move"
 				data-toggle="tooltip" data-placement="bottom" title="Move selected users to another list.">
 				<i class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></i>
 				Move
 			</button>
-			<div class="dropdown-menu" role="menu">
+			<div class="dropdown-menu" role="menu" data-action="move" >
 				<input type="text" class="form-control dropdown-input"
 					data-action="move"
 					placeholder="Move to List">

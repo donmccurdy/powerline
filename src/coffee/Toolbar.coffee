@@ -78,6 +78,7 @@ class Toolbar extends EventEmitter
 		@el.find('[data-toggle="tooltip"]').tooltip(delay: show: 1000, hide: 0)
 
 	bindKeys: () ->
+		# list actions
 		Mousetrap.bind Keymap.LIST_ADD.key, (e) =>
 			@focusDropdown 'add'
 			e.preventDefault()
@@ -88,19 +89,16 @@ class Toolbar extends EventEmitter
 			@collection.removeFromList()
 			e.preventDefault()
 
-		$('body').on 'keydown', (e) =>
-			unless @collection.selection?.count() then return
-
-			captured = true
-			switch e.which
-				when Keymap.UP_ARROW.keyCode
-					@collection.extendSelection -1, not e.shiftKey
-				when Keymap.DOWN_ARROW.keyCode
-					@collection.extendSelection +1, not e.shiftKey
-				when Keymap.LEFT_ARROW.keyCode
-					console.log Keymap.LEFT_ARROW.name
-				when Keymap.RIGHT_ARROW.keyCode
-					console.log Keymap.RIGHT_ARROW.name
-				else
-					captured = false
-			if captured then e.preventDefault()
+		# keyboard selection
+		Mousetrap.bind Keymap.UP_ARROW.key, (e) =>
+			@collection.extendSelection -1, not e.shiftKey
+			e.preventDefault()
+		Mousetrap.bind Keymap.DOWN_ARROW.key, (e) =>
+			@collection.extendSelection +1, not e.shiftKey
+			e.preventDefault()
+		Mousetrap.bind Keymap.LEFT_ARROW.key, (e) =>
+			console.log Keymap.LEFT_ARROW.action
+			e.preventDefault()
+		Mousetrap.bind Keymap.RIGHT_ARROW.key, (e) =>
+			console.log Keymap.RIGHT_ARROW.action
+			e.preventDefault()

@@ -4,76 +4,72 @@ class Keymap
 	# NAVIGATION
 	
 	@UP_ARROW:
-		name: 'Select Above'
-		key: '↑'
-		keyCode: 38
+		action: 'Select Above'
+		label: '↑'
+		key: ['up', 'shift+up']
 
 	@DOWN_ARROW:
-		name: 'Select Below'
-		key: '↓'
-		keyCode: 40
+		action: 'Select Below'
+		label: '↓'
+		key: ['down', 'shift+down']
 
 	@LEFT_ARROW:
-		name: 'Select Left'
-		key: '←'
-		keyCode: 37
+		action: 'Select Left'
+		label: '←'
+		key: ['left', 'shift+left']
 
 	@RIGHT_ARROW:
-		name: 'Select Right'
-		key: '→'
-		keyCode: 39
+		action: 'Select Right'
+		label: '→'
+		key: ['right', 'shift+right']
 
 	##############################
 	# LISTS
 	
 	@LIST_ADD:
-		name: 'Add to list'
+		action: 'Add to list'
+		label: 'L'
 		key: 'l'
 
 	@LIST_MOVE:
-		name: 'Move to list'
+		action: 'Move to list'
+		label: 'Shift + L'
 		key: 'shift+l'
 
 	@LIST_REMOVE:
-		name: 'Remove from list'
+		action: 'Remove from list'
+		label: 'E'
 		key: 'e'
 
 	##############################
 	# UTILITY
 
 	@SEARCH:
-		name: 'Search'
+		action: 'Search'
+		label: '/'
 		key: '/'
-		keyCode: 191
 
 	@SELECT_ALL:
-		name: 'Select All'
-		key: 'CMD + A'
-		keyCode: 65
-		keyModifiers:
-			meta: true
+		action: 'Select All'
+		label: 'Control/Command + A'
+		key: ['ctrl+a', 'meta+a']
 
 	@SHOW_ACTIONS:
-		name: 'More Actions'
+		action: 'More Actions'
+		label: '.'
 		key: '.'
-		keyCode: 190
 
 	@SHOW_DETAILS:
-		name: 'Show Details'
-		key: 'Spacebar'
-		keyCode: 32
+		action: 'Show Details'
+		label: 'Spacebar'
+		key: 'space'
 
 	@UNDO:
-		name: 'Undo'
-		key: 'CTRL + Z'
-		keyCode: 90
-		keyModifiers:
-			ctrl: true
+		action: 'Undo'
+		label: 'Control/Command + Z'
+		key: ['ctrl+z', 'meta+z']
 
 	@REDO:
-		name: 'Redo'
-		key: 'CTRL + SHIFT + Z'
-		keyCode: 90
-		keyModifiers:
-			ctrl: true
-			shift: true
+		action: 'Redo'
+		label: 'Control/Command + Shift + Z'
+		key: ['ctrl+shift+z', 'cmd+shift+z']

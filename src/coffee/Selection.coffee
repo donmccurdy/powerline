@@ -1,10 +1,14 @@
 class Selection extends EventEmitter
 
 	constructor: (@list) ->
+		@listID = @list.id
 		@userIDs = []
+		@anchorID = -1
+		@cursorID = -1
+		@list.setSelection @
 		@on 'change', => @render()
 
-	toggleUser: (userID, reset = false) ->
+	set: (userID, reset = false) ->
 		if @contains userID
 			if reset and @userIDs.length > 1
 				@userIDs = [userID]
@@ -15,18 +19,42 @@ class Selection extends EventEmitter
 				@userIDs = [userID]
 			else
 				@userIDs.push userID
+		if @contains userID
+			@anchorID = @cursorID = userID
 		@trigger 'change'
 
-	addUser: (userID, reset = false) ->
-		unless @contains userID
-			if reset then @userIDs = [userID]
-			else @userIDs.push userID
-		@trigger 'change'
-		@
+	setRange: (userID) ->
+		if @anchorID > 0
+			@userIDs = @getRange @anchorID, userID
+			@cursorID = userID
+			@trigger 'change'
 
-	set: (userIDs) ->
-		@userIDs = userIDs
+	incr: (direction) ->
+		users = @list.getUsers()
+		index = direction + _.findIndex users, id: @anchorID
+		@anchorID = @cursorID = users[index]?.id
+		@userIDs = [@anchorID]
 		@trigger 'change'
+
+	incrRange: (direction) ->
+		users = @list.getUsers()
+		index = direction + _.findIndex users, id: @cursorID
+		@cursorID = users[index]?.id
+		@userIDs = @getRange @anchorID, @cursorID
+		@trigger 'change'
+
+	getRange: (id1, id2) ->
+		users = []
+		inRange = false
+		for user in @list.getUsers()
+			if user.id is id1 or user.id is id2
+				if inRange or id1 is id2
+					users.push user
+					break
+				inRange = true
+			if inRange
+				users.push user
+		_.pluck users, 'id'
 
 	count: () ->
 		_.size @userIDs
@@ -34,7 +62,7 @@ class Selection extends EventEmitter
 	contains: (userID) ->
 		_.contains @userIDs, userID
 
-	getUsers: () ->
+	get: () ->
 		hash = _.invert @userIDs
 		size = _.size @userIDs
 		ids = []

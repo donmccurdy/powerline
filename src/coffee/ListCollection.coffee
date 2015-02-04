@@ -89,40 +89,21 @@ class ListCollection extends EventEmitter
 	select: (userID, listID, reset, range) ->
 		list = @getList listID
 
-		if range and listID is @lastSelectListID and @selection?.contains @lastSelectUserID
+		if range and listID is @selection?.listID
 			# Range selection
-			users = list.getUsersInRange @lastSelectUserID, userID
-			@selection.set _.pluck(users, 'id')
+			@selection.setRange userID
 		else
 			# Individual selection
 			if @selection?.list.id is listID
-				@selection.toggleUser userID, reset
+				@selection.set userID, reset
 			else
 				@selection?.destroy()
 				@selection = new Selection(list)
+				@selection.on 'change', => @trigger 'select'
 				@selection.on 'destroy', =>
 					@selection = null
 					@trigger 'select'
-				list.setSelection @selection
-				@selection.toggleUser userID
-
-			@lastSelectUserID = userID
-			@lastSelectListID = listID
-
-		@trigger 'select'
-		@
-
-	extendSelection: (direction, reset = false) ->
-		# TODO - lastSelectUserID should be managed within selection,
-		# 	because we're going to need a separate cursorID and selection
-		# 	anchor point for shift+up/down to work correctly.
-		users = @selection.list.getUsers()
-		index = direction + _.findIndex users, id: @lastSelectUserID
-		id = users[index]?.id
-		if id
-			@selection.addUser id, reset
-			@lastSelectUserID = id
-			@trigger 'select'
+				@selection.set userID
 		@
 
 	moveToList: (listID) ->

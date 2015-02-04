@@ -4,7 +4,7 @@
 class Command extends EventEmitter
 	constructor: (selection) ->
 		@id = _.uniqueId()
-		@userIDs = selection.getUsers()
+		@userIDs = selection.get()
 		@executed = false
 
 	execute: (collection) ->

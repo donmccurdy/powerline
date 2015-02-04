@@ -49,19 +49,6 @@ class List extends EventEmitter
 			users = _.filter users, (u) -> !skip[u.id]
 		users
 
-	getUsersInRange: (id1, id2) ->
-		users = []
-		inRange = false
-		for user in @getUsers()
-			if user.id is id1 or user.id is id2
-				if inRange
-					users.push user
-					break
-				inRange = true
-			if inRange
-				users.push user
-		users
-
 	add: (user) ->
 		if @isMutable and not @contains user
 			unless _.any(@users, id: user.id)

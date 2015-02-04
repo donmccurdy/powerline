@@ -89,7 +89,11 @@ class Toolbar extends EventEmitter
 		@bindKey Keymap.LIST_REMOVE.key, (e) => @collection.removeFromList()
 
 		# keyboard selection
-		@bindKey Keymap.UP.key, (e) => @collection.extendSelection -1, not e.shiftKey
-		@bindKey Keymap.DOWN.key, (e) => @collection.extendSelection +1, not e.shiftKey
+		@bindKey Keymap.UP.key, (e) =>
+			if e.shiftKey then @collection.selection?.incrRange -1
+			else @collection.selection?.incr -1
+		@bindKey Keymap.DOWN.key, (e) =>
+			if e.shiftKey then @collection.selection?.incrRange +1
+			else @collection.selection?.incr +1
 		@bindKey Keymap.LEFT.key, (e) => console.log Keymap.LEFT.action
 		@bindKey Keymap.RIGHT.key, (e) => console.log Keymap.RIGHT.action

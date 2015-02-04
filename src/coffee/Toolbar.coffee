@@ -90,10 +90,10 @@ class Toolbar extends EventEmitter
 
 		# keyboard selection
 		@bindKey Keymap.UP.key, (e) =>
-			if e.shiftKey then @collection.selection?.incrRange -1
-			else @collection.selection?.incr -1
+			if e.shiftKey then @collection.selection?.decrRange()
+			else @collection.selection?.decr()
 		@bindKey Keymap.DOWN.key, (e) =>
-			if e.shiftKey then @collection.selection?.incrRange +1
-			else @collection.selection?.incr +1
+			if e.shiftKey then @collection.selection?.incrRange()
+			else @collection.selection?.incr()
 		@bindKey Keymap.LEFT.key, (e) => console.log Keymap.LEFT.action
 		@bindKey Keymap.RIGHT.key, (e) => console.log Keymap.RIGHT.action

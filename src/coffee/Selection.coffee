@@ -8,6 +8,7 @@ class Selection extends EventEmitter
 		@list.setSelection @
 		@on 'change', => @render()
 
+	# Select/deselect given user.
 	set: (userID, reset = false) ->
 		if @contains userID
 			if reset and @userIDs.length > 1
@@ -23,26 +24,53 @@ class Selection extends EventEmitter
 			@anchorID = @cursorID = userID
 		@trigger 'change'
 
+	# Select all from anchor to given user.
 	setRange: (userID) ->
 		if @anchorID > 0
 			@userIDs = @getRange @anchorID, userID
 			@cursorID = userID
 			@trigger 'change'
 
-	incr: (direction) ->
+	# Move cursor to next user.
+	incr: (direction = 1) ->
 		users = @list.getUsers()
-		index = direction + _.findIndex users, id: @anchorID
+		index = direction + _.findIndex users, id: @cursorID
 		@anchorID = @cursorID = users[index]?.id
 		@userIDs = [@anchorID]
 		@trigger 'change'
 
-	incrRange: (direction) ->
+	# Extend selection to next cursor position.
+	incrRange: (direction = 1) ->
 		users = @list.getUsers()
 		index = direction + _.findIndex users, id: @cursorID
-		@cursorID = users[index]?.id
-		@userIDs = @getRange @anchorID, @cursorID
-		@trigger 'change'
+		if users[index]
+			@cursorID = users[index].id
+			@userIDs = @getRange @anchorID, @cursorID
+			@trigger 'change'
 
+	decr: () ->
+		@incr -1
+
+	decrRange: () ->
+		@incrRange -1
+
+	# Get User IDs.
+	# 
+	# Outside code shouldn't see @userIDs because
+	# 	it's (1) unsorted, and (2) not checked
+	# 	for uniqueness.
+	get: () ->
+		hash = _.invert @userIDs
+		size = _.size @userIDs
+		ids = []
+		for user in @list.getUsers()
+			if hash[user.id]
+				ids.push user.id
+			if size is ids.length
+				break
+		ids
+
+	# Get IDs between a given pair.
 	getRange: (id1, id2) ->
 		users = []
 		inRange = false
@@ -61,17 +89,6 @@ class Selection extends EventEmitter
 
 	contains: (userID) ->
 		_.contains @userIDs, userID
-
-	get: () ->
-		hash = _.invert @userIDs
-		size = _.size @userIDs
-		ids = []
-		for user in @list.getUsers()
-			if hash[user.id]
-				ids.push user.id
-			if size is ids.length
-				break
-		ids
 
 	render: () ->
 		@list.el.find('.selected').removeClass 'selected'

@@ -77,28 +77,19 @@ class Toolbar extends EventEmitter
 		# bind tooltips
 		@el.find('[data-toggle="tooltip"]').tooltip(delay: show: 1000, hide: 0)
 
-	bindKeys: () ->
-		# list actions
-		Mousetrap.bind Keymap.LIST_ADD.key, (e) =>
-			@focusDropdown 'add'
-			e.preventDefault()
-		Mousetrap.bind Keymap.LIST_MOVE.key, (e) =>
-			@focusDropdown 'move'
-			e.preventDefault()
-		Mousetrap.bind Keymap.LIST_REMOVE.key, (e) =>
-			@collection.removeFromList()
+	bindKey: (key, callback) ->
+		Mousetrap.bind key, (e) ->
+			callback(e)
 			e.preventDefault()
 
+	bindKeys: () ->
+		# list actions
+		@bindKey Keymap.LIST_ADD.key, (e) => @focusDropdown 'add'
+		@bindKey Keymap.LIST_MOVE.key, (e) => @focusDropdown 'move'
+		@bindKey Keymap.LIST_REMOVE.key, (e) => @collection.removeFromList()
+
 		# keyboard selection
-		Mousetrap.bind Keymap.UP_ARROW.key, (e) =>
-			@collection.extendSelection -1, not e.shiftKey
-			e.preventDefault()
-		Mousetrap.bind Keymap.DOWN_ARROW.key, (e) =>
-			@collection.extendSelection +1, not e.shiftKey
-			e.preventDefault()
-		Mousetrap.bind Keymap.LEFT_ARROW.key, (e) =>
-			console.log Keymap.LEFT_ARROW.action
-			e.preventDefault()
-		Mousetrap.bind Keymap.RIGHT_ARROW.key, (e) =>
-			console.log Keymap.RIGHT_ARROW.action
-			e.preventDefault()
+		@bindKey Keymap.UP.key, (e) => @collection.extendSelection -1, not e.shiftKey
+		@bindKey Keymap.DOWN.key, (e) => @collection.extendSelection +1, not e.shiftKey
+		@bindKey Keymap.LEFT.key, (e) => console.log Keymap.LEFT.action
+		@bindKey Keymap.RIGHT.key, (e) => console.log Keymap.RIGHT.action

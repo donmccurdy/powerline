@@ -3,22 +3,22 @@ class Keymap
 	##############################
 	# NAVIGATION
 	
-	@UP_ARROW:
+	@UP:
 		action: 'Select Above'
 		label: '↑'
 		key: ['up', 'shift+up']
 
-	@DOWN_ARROW:
+	@DOWN:
 		action: 'Select Below'
 		label: '↓'
 		key: ['down', 'shift+down']
 
-	@LEFT_ARROW:
+	@LEFT:
 		action: 'Select Left'
 		label: '←'
 		key: ['left', 'shift+left']
 
-	@RIGHT_ARROW:
+	@RIGHT:
 		action: 'Select Right'
 		label: '→'
 		key: ['right', 'shift+right']

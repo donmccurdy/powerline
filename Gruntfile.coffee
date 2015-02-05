@@ -9,7 +9,7 @@ module.exports = (grunt) ->
 		'node_modules/lodash/dist/lodash.min.js'
 		'node_modules/eventify/dist/eventify.min.js'
 		'bower_components/jquery/dist/jquery.min.js'
-		'bower_components/oauth-js/dist/oauth.min.js'
+		'bower_components/hello/dist/hello.all.min.js'
 		'bower_components/mousetrap/mousetrap.min.js'
 		'bower_components/asg.js/dist/asg.min.js'
 	]

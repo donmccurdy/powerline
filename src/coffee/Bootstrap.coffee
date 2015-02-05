@@ -14,6 +14,7 @@ class Bootstrap
 			@twitter.getCurrentUser().done (user) =>
 				@user = user
 				@collection = new ListCollection(@user, @twitter)
+				@render()
 		@render()
 
 	logout: () ->

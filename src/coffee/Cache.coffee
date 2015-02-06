@@ -1,11 +1,10 @@
-# 
 # Cache Service
 #
 # Basic implementation of an in-memory + LocalStorage cache.
 #
 # TODO This is a pretty naïve approach. A production-ready
 #	implementation will probably need to involve expiration
-#	times and clear functions.
+#	times and better clear functions.
 #
 class Cache
 
@@ -26,13 +25,9 @@ class Cache
 		@cache[key] = null
 		localStorage.removeItem key
 
-	bind: (key, fetch) ->
-		cache = @
-		deferred = $.Deferred()
-		data = @get(key)
-		if data
-			deferred.resolve data
+	bind: (key, fetch) ->		
+		if data = @get(key)
+			deferred = $.Deferred().resolve data
 		else
-			fetch(deferred)
-			deferred.done (data) -> cache.set(key, data)
-		deferred
+			fetch().done (data) =>
+				@set(key, data)

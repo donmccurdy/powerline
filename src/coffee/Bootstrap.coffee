@@ -1,3 +1,8 @@
+# Bootstrap
+# 
+# Kicks off main processes, and renders a static
+# 	view for logged-out users.
+#
 class Bootstrap
 
 	twitter: null,

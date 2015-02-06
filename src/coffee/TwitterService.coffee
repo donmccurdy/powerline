@@ -19,6 +19,9 @@ class TwitterService
 	publish: (event, data) ->
 		@listeners[event].forEach (cbk) -> cbk(data)
 
+	# Login / Initialization
+	#######################################
+
 	initialize: ->
 		hello.init twitter: 'EZIGSwadFs8Z23g35SXUYDri1'
 		@twitter = hello 'twitter'
@@ -46,16 +49,43 @@ class TwitterService
 		@twitter.logout()
 		@twitter = false
 
-	getCurrentUser: ->
-		$d = @cache.bind 'current-user', (deferred) =>
-			@twitter.api 'me'
-				.then(
-					(data) -> deferred.resolve data
-					(data) -> deferred.reject data
-				)
+	# AJAX Requests
+	#######################################
 
-		$d.done (data) => @cacheUsers [data]
-		$d
+	request: (path, data, method) ->
+		deferred = $.Deferred()
+		params = ''
+		if data
+			# doing this for *both* GET+POST requests because
+			#	POST bodies aren't going through as expected.
+			params = '?' + $.param data
+		if method is 'get'
+			data = {}
+		@twitter.api path + params, method, data
+			.then(
+				(data) ->
+					if data?.errors
+						deferred.reject data
+					else
+						deferred.resolve data
+				(data) ->
+					deferred.reject data
+			)
+		deferred
+
+	get: (path, data) ->
+		@request path, data, 'get'
+
+	post: (path, data) ->
+		@request path, data, 'post'
+
+	# API Definition
+	#######################################
+
+	getCurrentUser: ->
+		@cache.bind 'current-user', () =>
+				@get 'me'
+			.done (data) => @cacheUsers [data]
 
 	getUser: (userID) ->
 		if @users[userID]
@@ -71,91 +101,54 @@ class TwitterService
 					@users[user.id] = user
 
 	getFriends: (cursor) ->
-		$d = @cache.bind "friends-#{cursor}", (deferred) =>
-			@twitter.api '/friends/list.json', 'get',
+		@cache.bind "friends-#{cursor}", () =>
+				@get '/friends/list.json',
 					count: 200 # max = 200, 15 / 15 min
 					cursor: cursor
 					skip_status: true
 					include_user_entities: false
-				.then(
-					(data) -> deferred.resolve data
-					(data) -> deferred.reject data
-				)
-		$d.done (data) => @cacheUsers data.users
-		$d
+			.done (data) => @cacheUsers data.users
 
 	getLists: (clear = false) ->
 		if clear then @cache.clear 'lists'
-		return @cache.bind 'lists', (deferred) =>
-			@twitter.api '/lists/ownerships.json', 'get', count: 100
-				.then(
-					(data) -> deferred.resolve data.lists
-					(data) -> deferred.reject data
-				)
+		return @cache.bind 'lists', () =>
+			@get '/lists/ownerships.json', count: 100
 
 	getListMembers: (listID, cursor, clear = false) ->
 		if clear then @cache.clear "list-#{listID}-#{cursor}"
-		$d = @cache.bind "list-#{listID}-#{cursor}", (deferred) =>
-			@twitter.api '/lists/members.json', 'get',
+		@cache.bind "list-#{listID}-#{cursor}", () =>
+				@get '/lists/members.json',
 					count: 200 # max = 5000, 180 / 15 min
 					list_id: listID
 					cursor: cursor
 					skip_status: true
 					include_entities: false
-				.then(
-					(data) -> deferred.resolve data
-					(data) -> deferred.reject data
-				)
-		$d.done (data) => @cacheUsers data.users
-		$d
+			.done (data) => @cacheUsers data.users
 
 	addListMembers: (listID, userIDs) ->
-		@twitter.api '/lists/members/create_all.json', 'post',
+		@post '/lists/members/create_all.json',
 				list_id: listID
 				user_id: userIDs.join(',')
-			.then(
-				(data) -> console.log data
-				(data) -> console.error data
-			)
 
 	removeListMembers: (listID, userIDs) ->
-		deferred = $.Deferred()
-		@twitter.api '/lists/members/destroy_all.json', 'post',
+		@post '/lists/members/destroy_all.json',
 				list_id: listID
 				user_id: userIDs.join(',')
-			.then(
-				(data) -> deferred.resolve data
-				(data) -> deferred.reject data
-			)
-		deferred
 
 	upsertList: (metadata) ->
 		@cache.clear 'lists'
-		deferred = $.Deferred()
 		if metadata.id
-			req = @twitter.api '/lists/update.json', 'post',
+			@post '/lists/update.json',
 				list_id: metadata.id
 				name: metadata.name
 				mode: metadata.mode
 				description: metadata.description
 		else
-			req = @twitter.api '/lists/create.json', 'post',
+			@post '/lists/create.json',
 				name: metadata.name
 				mode: metadata.mode
 				description: metadata.description
-		req.then(
-			(data) -> deferred.resolve data
-			(data) -> deferred.reject data
-		)
-		deferred
-
 
 	removeList: (listID) ->
 		@cache.clear 'lists'
-		deferred = $.Deferred()
-		@twitter.api '/lists/destroy.json', 'post', list_id: listID
-			.then(
-				(data) -> deferred.resolve data
-				(data) -> deferred.reject data
-			)
-		deferred
+		@post '/lists/destroy.json', list_id: listID

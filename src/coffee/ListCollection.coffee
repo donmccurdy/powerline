@@ -1,3 +1,16 @@
+# List Collection
+# 
+# Represents the main workspace, comprised of
+# 	one or more lists that can exchange users.
+# 	
+# 	Delegates to:
+#
+# 	- Toolbar: UI+hotkey bindings
+# 	- Twitter: Interacts with Twitter API
+# 	- Selection: Manages selection state
+# 	- List: Represents a single list
+# 	- CommandQueue: Tracks changes for save/undo/redo
+#
 class ListCollection extends EventEmitter
 
 	constructor: (user, twitter) ->
@@ -16,8 +29,8 @@ class ListCollection extends EventEmitter
 	init: () ->
 		# Lists
 		has_lists = $.Deferred()
-		@twitter.getLists().done (lists) =>
-			@availableLists = _.sortBy lists, (l) ->
+		@twitter.getLists().done (data) =>
+			@availableLists = _.sortBy data.lists, (l) ->
 				l.name.toUpperCase()
 			has_lists.resolve()
 		

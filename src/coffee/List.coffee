@@ -1,3 +1,12 @@
+# List
+# 
+# Represents a single list of Twitter users.
+# 
+# Delegates to:
+# 	- Stream: Hides some of the details of
+# 		pagination, and the differences between
+# 		'real' lists and the Following pseudo-list.
+#
 class List extends EventEmitter
 
 	constructor: (@stream) ->

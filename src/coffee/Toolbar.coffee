@@ -97,3 +97,6 @@ class Toolbar extends EventEmitter
 			else @collection.selection?.incr()
 		@bindKey Keymap.LEFT.key, (e) => console.log Keymap.LEFT.action
 		@bindKey Keymap.RIGHT.key, (e) => console.log Keymap.RIGHT.action
+
+		# user details
+		@bindKey Keymap.SHOW_DETAILS.key, (e) => @collection.showDetails()

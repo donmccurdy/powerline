@@ -1,0 +1,44 @@
+
+<div class="modal-header">
+	<h4 class="modal-title">
+		<div class="user-detail-img-wrap">
+			<img src="{{= thumbnail }}" alt="{{- name }} profile image" class="img-thumbnail">
+		</div>
+		<div>{{- name }}</div>
+		<div class="user-screen-name">@{{- screen_name }}</div>
+	</h4>
+</div>
+<div class="modal-body">
+
+	<p class="user-description">{{- description }}</p>
+
+	<ul class="list-group">
+		{{ if (url) { }}
+		<li class="list-group-item">
+			Website: <a href="{{= url }}">{{= url }}</a>
+		</li>
+		{{ } }}
+		<li class="list-group-item">
+			{{= following ? 'Followed' : 'Not Followed' }}
+		</li>
+		{{ if (muting) { }}
+		<li class="list-group-item">
+			<i class="glyphicon glyphicon-volume-off"></i>
+			Muted
+		</li>
+		{{ } }}
+		{{ if (verified) { }}
+		<li class="list-group-item">
+			Verified
+		</li>
+		{{ } }}
+		<li class="list-group-item">{{= followers_count }} followers</li>
+		<li class="list-group-item">{{= friends_count }} following</li>
+		<li class="list-group-item">{{= statuses_count }} tweets</li>
+		<!-- followed_by is a separate request -->
+	</ul>
+
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+</div>

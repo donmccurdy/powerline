@@ -200,3 +200,11 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 	color: $lightGrey;
 	font-style: italic;
 }
+
+/* User Detail Modal
+*********************************/
+
+.user-detail-img-wrap {
+	float: left;
+	margin-right: 10px;
+}

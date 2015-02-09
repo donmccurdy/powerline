@@ -1,0 +1,22 @@
+<div class="modal-header">
+	<h4 class="modal-title">Saving Changes...</h4>
+</div>
+<div class="modal-body">
+	<div class="progress">
+		<div class="progress-bar progress-bar-success" role="progressbar"
+			aria-valuenow="{{= progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{= progress }}%">
+			<span class="sr-only">{{= progress }}% Complete</span>
+		</div>
+	</div>
+	{{ if (progress === 100.0) { }}
+	<div class="alert alert-success" role="alert">Changes have been saved.</div>
+	{{ } else if (error) { }}
+	<div class="alert alert-danger" role="alert">Sorry, something went wrong!</div>
+	{{ } }}
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-dismiss="modal"
+		{{ if (progress < 100.0) { }}disabled{{ } }}>
+		Continue
+	</button>
+</div>

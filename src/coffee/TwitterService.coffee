@@ -8,38 +8,34 @@
 # 	interactions, so most of that will probably
 # 	need to be located elsewhere.
 #
-class TwitterService
+class TwitterService extends EventEmitter
 
-	cache: new Cache()
+	cache: null
 	users: {}
-	authResult: false
-	listeners:
-		ready: []
-
-	publish: (event, data) ->
-		@listeners[event].forEach (cbk) -> cbk(data)
 
 	# Login / Initialization
 	#######################################
 
-	initialize: ->
+	constructor: ->
 		hello.init twitter: 'EZIGSwadFs8Z23g35SXUYDri1'
 		@twitter = hello 'twitter'
-		if @twitter.getAuthResponse()
-			@publish 'ready'
+		if @isReady() then @init()
+
+	init: ->
+		uid = @twitter.getAuthResponse().user_id
+		@cache = new Cache(uid)
+		@trigger 'ready'
 
 	isReady: ->
 		!!@twitter.getAuthResponse()
-
-	on: (event, callback) ->
-		@listeners[event].push(callback)
 
 	connectTwitter: ->
 		deferred = $.Deferred()
 		@twitter.login().then(
 			(r) =>
+				@init()
 				deferred.resolve()
-				@publish 'ready'
+				@trigger 'ready'
 			(r) =>
 				deferred.reject r
 		)

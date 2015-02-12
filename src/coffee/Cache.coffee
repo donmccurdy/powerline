@@ -8,22 +8,32 @@
 #
 class Cache
 
-	cache: {}
+	constructor: (@userID) ->
+		@cache = JSON.parse(localStorage.getItem @getBin())
+		date = new Date().toLocaleDateString()
+		unless @cache?.date is date
+			@cache = {}
+			@cache.date = date
 
 	get: (key) ->
-		if @cache[key]
-			return @cache[key]
-		else if (json = localStorage.getItem(key))
-			return JSON.parse json
-		null
+		@cache[key]
 
 	set: (key, value) ->
 		@cache[key] = value
-		localStorage.setItem key, JSON.stringify(value)
+		@persist()
+		@
+
+	persist: () ->
+		localStorage.setItem @getBin(), JSON.stringify @cache
+		@
 
 	clear: (key) ->
-		@cache[key] = null
-		localStorage.removeItem key
+		delete @cache[key]
+		@persist()
+		@
+
+	getBin: (key) ->
+		"tmp-cache-#{@userID}"
 
 	bind: (key, fetch) ->		
 		if data = @get(key)

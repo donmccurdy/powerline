@@ -9,12 +9,12 @@ class Bootstrap
 	user: null,
 
 	constructor: () ->
-		@twitter = new TwitterService()
 		@$header = $('.pline-header')
 		@friends = null
 		@collection = null
 
 	login: () ->
+		@twitter = new TwitterService()
 		if @twitter.isReady()
 			@twitter.getCurrentUser().done (user) =>
 				@user = user
@@ -30,8 +30,6 @@ class Bootstrap
 		window.location.reload(false)
 
 	start: () ->
-		@twitter.initialize()
-
 		@$header
 			.on 'click', '.btn-login', =>  
 				@twitter.connectTwitter().then => @login()

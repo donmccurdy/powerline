@@ -2,10 +2,6 @@
 #
 # Basic implementation of an in-memory + LocalStorage cache.
 #
-# TODO This is a pretty naïve approach. A production-ready
-#	implementation will probably need to involve expiration
-#	times and better clear functions.
-#
 class Cache
 
 	constructor: (@userID) ->

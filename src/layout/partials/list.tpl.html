@@ -26,11 +26,18 @@
 						Delete
 					</a></li>
 					{{ } else { }}
-					<li><a href="#" class="list-filter-all">
+					<li><a href="#" class="list-filter" data-pivot="all">
 						All Following
+						{{ if (pivot === 'all') { }}
 						<i class="glyphicon glyphicon-ok"></i>
+						{{ } }}
 					</a></li>
-					<li><a href="#" class="list-filter-unlisted">Only Unlisted</a></li>
+					<li><a href="#" class="list-filter" data-pivot="unlisted">
+						Not in a List
+						{{ if (pivot === 'unlisted') { }}
+						<i class="glyphicon glyphicon-ok"></i>
+						{{ } }}
+					</a></li>
 					{{ } }}
 				</ul>
 			</li>

@@ -15,6 +15,7 @@ class List extends EventEmitter
 		@mode = @stream.mode
 		@description = @stream.description
 		@users = @stream.current()
+		@pivot = 'all'
 		@usersAdded = []
 		@usersRemoved = []
 		@selection = null
@@ -46,6 +47,8 @@ class List extends EventEmitter
 			@stream.remove()
 				.done => @destroy()
 				.fail => console.log "could not delete list #{@id}"
+		@el.on 'click', '.list-filter', (e) =>
+			@filter $(e.target).data('pivot')
 		@
 
 	count: () ->
@@ -87,6 +90,11 @@ class List extends EventEmitter
 			@render()
 		@stream.reload(deferred)
 		deferred
+
+	filter: (pivot) ->
+		@pivot = pivot
+		# todo
+		@render()
 
 	update: (metadata) ->
 		@name = metadata.name

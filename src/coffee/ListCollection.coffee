@@ -22,16 +22,17 @@ class ListCollection extends EventEmitter
 		@toolbar = null
 		@selection = null
 		@lists = []
-		@availableLists = []
+		@openLists = []
 		@commandQueue = new CommandQueue(@)
 		@init()
 
 	init: () ->
 		# Lists
+		list_metadata = []
 		has_lists = $.Deferred()
 		@twitter.getLists().done (data) =>
-			@availableLists = _.sortBy data.lists, (l) ->
-				l.name.toUpperCase()
+			for metadata in data.lists
+				@addList metadata
 			has_lists.resolve()
 		
 		# Following
@@ -41,11 +42,15 @@ class ListCollection extends EventEmitter
 			member_count: @user.friends_count
 		stream = new UserStream(0, metadata, @twitter)
 		stream.ready().done =>
-			@lists.push(new List(stream))
+			list = new List(stream)
+			@lists.unshift list
+			@openLists.unshift list
 			has_friends.resolve()
 
 		# Render
-		$.when(has_lists, has_friends).done => @render()
+		$.when(has_lists, has_friends).done =>
+			@lists = _.sortBy @lists, (l) -> l.name.toUpperCase()
+			@render()
 
 	# Render
 	#######################################
@@ -57,7 +62,7 @@ class ListCollection extends EventEmitter
 		@toolbar = new Toolbar(@$el.find('.toolbar'), @$footer, @)
 
 		# lists
-		elements = _.map @lists, (list) -> list.render()
+		elements = _.map @openLists, (list) -> list.render()
 		@$collection.append elements
 
 		@bindEvents()
@@ -77,24 +82,22 @@ class ListCollection extends EventEmitter
 	getList: (listID) ->
 		_(@lists).where(id: +listID).first()
 
-	addList: (listID) ->
-		metadata = _(@availableLists)
-			.where(id: +listID)
-			.first()
-		unless metadata
-			throw "No such list: #{listID}"
-		stream = new UserStream(listID, metadata, @twitter)
+	addList: (metadata) ->
+		stream = new UserStream(metadata.id, metadata, @twitter)
 		stream.ready().done =>
-			@push new List(stream)
+			list = new List(stream)
+			@lists.push list
+			list.on 'destroy', => _.remove @lists, list
+			list.on 'hide', => _.remove @openLists, list
+
+	openList: (listID) ->
+		unless _.findWhere(@openLists, id: listID)
+			list = @getList listID
+			@openLists.push list
+			@$collection.append list.render()
 
 	getUser: (userID) ->
 		@twitter.getUser userID
-
-	push: (list) ->
-		@$collection.append list.render()
-		@lists.push list
-		list.on 'destroy', =>
-			_.remove @lists, (l) -> l.id is list.id
 
 	# Selection Management
 	#######################################
@@ -156,17 +159,15 @@ class ListCollection extends EventEmitter
 	update: (listChanges) ->
 		list = @getList listChanges.id
 		if list
-			list.update(listChanges)
+			list.update listChanges
 		else
-			@availableLists.push listChanges
-			@availableLists = _.sortBy @availableLists, (l) ->
-				l.name.toUpperCase()
+			@addList listChanges
 
 	# Debugging
 	#######################################
 
 	debug: () ->
-		for list in @lists
+		for list in @openLists
 			unless list.id then continue
 			console.group list.name
 			list.debug()

@@ -20,14 +20,14 @@ class Toolbar extends EventEmitter
 			delay: 20
 			minChars: 0
 			numToSuggest: 100
-			source: _.map @collection.availableLists, (list) ->
+			source: _.map @collection.lists, (list) ->
 				{key: list.id, value: list.name}
 
 		# list search
 		$asgSearch = @el.find('.input-list-search').asg(_.merge(asg_options,
 			offsetTop: 14
 			callback: =>
-				@collection.addList asgSearch.get().key
+				@collection.openList asgSearch.get().key
 				asgSearch.clear()
 				$asgSearch.blur()
 		))

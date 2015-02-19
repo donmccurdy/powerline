@@ -42,7 +42,9 @@ class List extends EventEmitter
 		@el.on 'click', '.list-edit', =>
 			form = new ListForm(@stream.twitter, @)
 			form.on 'save', (metadata) => @update metadata
-		@el.on 'click', '.list-hide', => @destroy()
+		@el.on 'click', '.list-hide', =>
+			@trigger 'hide'
+			@el.detach()
 		@el.on 'click', '.list-remove', =>
 			@stream.remove()
 				.done => @destroy()

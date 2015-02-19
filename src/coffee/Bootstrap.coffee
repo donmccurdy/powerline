@@ -5,8 +5,10 @@
 #
 class Bootstrap
 
-	twitter: null,
-	user: null,
+	MAX_USERS: 2000
+
+	twitter: null
+	user: null
 
 	constructor: () ->
 		@$header = $('.pline-header')
@@ -16,10 +18,12 @@ class Bootstrap
 	login: () ->
 		@twitter = new TwitterService()
 		if @twitter.isReady()
-			@twitter.getCurrentUser().done (user) =>
-				@user = user
-				@collection = new ListCollection(@user, @twitter)
-				@render()
+			@twitter.getCurrentUser().done (user) => @init user
+		@render()
+
+	init: (user) ->
+		@user = user
+		@collection = new ListCollection(@user, @twitter)
 		@render()
 
 	logout: () ->
@@ -40,3 +44,9 @@ class Bootstrap
 	render: () ->
 		$('.navbar-right').html JST['navbar-right'](user: @user)
 		$('.footer').html JST['footer'](user: @user)
+		if @user.friends_count > @MAX_USERS and not @popup
+			@popup = $ JST['modal'](content: JST['over-limits']())
+			@popup.modal
+				backdrop: true
+				keyboard: true
+				show: true

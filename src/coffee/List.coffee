@@ -20,6 +20,9 @@ class List extends EventEmitter
 		@selection = null
 		@isMutable = !!@id
 		@el = $(JST.list(@))
+		@stream.on 'load', =>
+			@users = @stream.current()
+			@render()
 
 	render: () ->
 		rows = _.map @getUsers(), (user) =>

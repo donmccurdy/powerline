@@ -1,6 +1,6 @@
 <section class="list-wrap">
 	<header class="list-title">
-		{{- name }}
+		{{- pivot === 'all' ? name : 'Unlisted' }}
 		<sup>({{= count() }})</sup>
 		<ul class="nav nav-pills">
 			<li class="dropdown">
@@ -33,7 +33,7 @@
 						{{ } }}
 					</a></li>
 					<li><a href="#" class="list-filter" data-pivot="unlisted">
-						Not in a List
+						Unlisted
 						{{ if (pivot === 'unlisted') { }}
 						<i class="glyphicon glyphicon-ok"></i>
 						{{ } }}

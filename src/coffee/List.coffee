@@ -21,6 +21,7 @@ class List extends EventEmitter
 		@selection = null
 		@isMutable = !!@id
 		@el = $(JST.list(@))
+		@bindEvents()
 		@stream.on 'load', =>
 			@users = @stream.current()
 			@render()
@@ -30,13 +31,17 @@ class List extends EventEmitter
 			JST.user(user: user, selected: @selection?.contains user.id)
 		@el.html $(JST.list(@)).children()
 			.find('.list').html rows.join('')
-		@bindEvents()
 		@el
 
 	setSelection: (selection) ->
 		@selection = selection
 		@selection.on 'destroy', => @selection = null
 		@
+
+	# only provided for id=0 case
+	setCollection: (collection) ->
+		@collection = collection
+		@collection.on 'change', => @render()
 
 	bindEvents: () ->
 		@el.on 'click', '.list-edit', =>
@@ -54,7 +59,7 @@ class List extends EventEmitter
 		@
 
 	count: () ->
-		@stream.count() + @usersAdded.length - @usersRemoved.length
+		_.size @getUsers()
 
 	getUsers: () ->
 		users = @usersAdded.concat(@users)
@@ -64,6 +69,9 @@ class List extends EventEmitter
 				.invert()
 				.value()
 			users = _.filter users, (u) -> !skip[u.id]
+		if @pivot is 'unlisted' and @collection
+			map = @collection.getMembershipMap()
+			users = _.filter users, (u) -> !map[u.id]
 		users
 
 	add: (user) ->
@@ -95,7 +103,6 @@ class List extends EventEmitter
 
 	filter: (pivot) ->
 		@pivot = pivot
-		# todo
 		@render()
 
 	update: (metadata) ->

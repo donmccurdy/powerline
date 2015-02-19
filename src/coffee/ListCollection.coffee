@@ -43,6 +43,7 @@ class ListCollection extends EventEmitter
 		stream = new UserStream(0, metadata, @twitter)
 		stream.ready().done =>
 			list = new List(stream)
+			list.setCollection @
 			@lists.unshift list
 			@openLists.unshift list
 			has_friends.resolve()
@@ -127,17 +128,20 @@ class ListCollection extends EventEmitter
 			cmd = new MoveCommand(@selection, @getList(listID))
 			@commandQueue.push cmd
 			@selection.destroy()
+			@trigger 'change'
 
 	addToList: (listID) ->
 		if @selection
 			cmd = new AddCommand(@selection, @getList(listID))
 			@commandQueue.push cmd
+			@trigger 'change'
 
 	removeFromList: () ->
 		if @selection
 			cmd = new RemoveCommand(@selection)
 			@commandQueue.push cmd
 			@selection.destroy()
+			@trigger 'change'
 
 	showDetails: () ->
 		if @selection.count() is 1
@@ -162,6 +166,14 @@ class ListCollection extends EventEmitter
 			list.update listChanges
 		else
 			@addList listChanges
+
+	getMembershipMap: () ->
+		map = {}
+		for list in @lists
+			if list.id is 0 then continue
+			for user in list.getUsers()
+				map[user.id] = true
+		map
 
 	# Debugging
 	#######################################

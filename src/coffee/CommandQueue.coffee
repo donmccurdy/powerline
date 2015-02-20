@@ -21,6 +21,9 @@ class CommandQueue
 		cmd.undo @collection
 		@redoQueue.push cmd
 
+	isModified: () ->
+		!!@undoQueue.length
+
 	save: () ->
 		changes = new CommandAggregator(@collection.twitter, @undoQueue)
 		changes.apply()

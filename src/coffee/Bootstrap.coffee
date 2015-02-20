@@ -39,7 +39,13 @@ class Bootstrap
 				@twitter.connectTwitter().then => @login()
 			.on 'click', '.btn-logout', => @logout()
 
+		window.onbeforeunload = => @onBeforeUnload()
+
 		@login() # Log in automatically, if possible
+
+	onBeforeUnload: () ->
+		if @collection?.isModified()
+			'Unsaved changes will be lost. Are you sure you want to continue?'
 
 	render: () ->
 		$('.navbar-right').html JST['navbar-right'](user: @user)

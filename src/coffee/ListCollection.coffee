@@ -155,7 +155,12 @@ class ListCollection extends EventEmitter
 	#######################################
 
 	save: () ->
-		@commandQueue.save()
+		if @isModified()
+			@commandQueue.save()
+
+
+	isModified: () ->
+		@commandQueue.isModified()
 
 	# List Management
 	#######################################

@@ -28,19 +28,22 @@ module.exports = (grunt) ->
 
 		dev_scripts: [
 			'EventEmitter'
+			
+			'Bootstrap'
 			'Cache'
+			'Command'
+			'CommandAggregator'
+			'CommandQueue'
 			'Keymap'
 			'List'
-			'ListForm'
 			'ListCollection'
+			'ListForm'
 			'Selection'
-			'Command'
-			'CommandQueue'
-			'CommandAggregator'
 			'Toolbar'
 			'TwitterService'
 			'UserStream'
-			'Bootstrap'
+			'Util'
+
 			'main'
 		]
 

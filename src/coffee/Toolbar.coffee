@@ -20,8 +20,7 @@ class Toolbar extends EventEmitter
 			delay: 20
 			minChars: 0
 			numToSuggest: 100
-			source: _.map @collection.lists, (list) ->
-				{key: list.id, value: list.name}
+			source: @findList
 
 		# list search
 		$asgSearch = @el.find('.input-list-search').asg(_.merge(asg_options,
@@ -76,6 +75,18 @@ class Toolbar extends EventEmitter
 
 		# bind tooltips
 		@el.find('[data-toggle="tooltip"]').tooltip(delay: show: 1000, hide: 0)
+
+	findList: (id, label, callback) =>
+		lists = @collection.lists
+		if id
+			lists = _.where lists, id: id
+		else if label
+			re1 = new RegExp('^' + RegExp.quote(label), 'i')
+			re2 = new RegExp(RegExp.quote(label), 'i')
+			primary = _.filter lists, (l) -> l.name.match re1
+			secondary = _.filter lists, (l) -> l.name.match re2
+			lists = _.unique primary.concat(secondary)
+		callback(_.map lists, (l) -> key: l.id, value: l.name)
 
 	bindKey: (key, callback) ->
 		Mousetrap.bind key, (e) ->

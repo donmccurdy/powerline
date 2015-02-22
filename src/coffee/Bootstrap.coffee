@@ -50,7 +50,7 @@ class Bootstrap
 	render: () ->
 		$('.navbar-right').html JST['navbar-right'](user: @user)
 		$('.footer').html JST['footer'](user: @user)
-		if @user.friends_count > @MAX_USERS and not @popup
+		if @user?.friends_count > @MAX_USERS and not @popup
 			@popup = $ JST['modal'](content: JST['over-limits']())
 			@popup.modal
 				backdrop: true

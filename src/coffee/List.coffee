@@ -29,8 +29,11 @@ class List extends EventEmitter
 	render: () ->
 		rows = _.map @getUsers(), (user) =>
 			JST.user(user: user, selected: @selection?.contains user.id)
+		scrollTop = @el.find('.list').scrollTop()
 		@el.html $(JST.list(@)).children()
-			.find('.list').html rows.join('')
+			.find('.list')
+				.html rows.join('')
+				.scrollTop scrollTop
 		@el
 
 	setSelection: (selection) ->

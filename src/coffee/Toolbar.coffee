@@ -77,7 +77,7 @@ class Toolbar extends EventEmitter
 		@el.find('[data-toggle="tooltip"]').tooltip(delay: show: 1000, hide: 0)
 
 	findList: (id, label, callback) =>
-		lists = @collection.lists
+		lists = _.filter @collection.lists, (l) -> !!l.id
 		if id
 			lists = _.where lists, id: id
 		else if label

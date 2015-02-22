@@ -6,7 +6,8 @@ class ListForm extends EventEmitter
 		description: ''
 		mode: 'private'
 
-	constructor: (@twitter, @metadata = @DEFAULT_METADATA) ->
+	constructor: (@twitter, @metadata = {}) ->
+		@metadata = _.merge @metadata, @DEFAULT_METADATA
 		@el = $ JST['modal'](content: JST['list-form'](@metadata))
 		@el.modal
 			backdrop: true

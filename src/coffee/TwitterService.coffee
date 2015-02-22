@@ -93,6 +93,7 @@ class TwitterService extends EventEmitter
 		_.defer =>
 			for user in users
 				unless @users[user.id]
+					user.muting = user.muting or false
 					user.thumbnail = user.profile_image_url_https or user.profile_image_url
 					@users[user.id] = user
 

@@ -14,11 +14,12 @@
 class ListCollection extends EventEmitter
 
 	constructor: (user, twitter) ->
-		@$el = $('.collection-wrap')
-		@$footer = $('.footer')
-		@$collection = null
+		@el = $('.collection-wrap')
+		@footer = $('.footer')
+		@collection = null
 		@user = user
 		@twitter = twitter
+		@cache = new Cache(@user.id)
 		@toolbar = null
 		@selection = null
 		@lists = []
@@ -51,31 +52,33 @@ class ListCollection extends EventEmitter
 		# Render
 		$.when(has_lists, has_friends).done =>
 			@lists = _.sortBy @lists, (l) -> l.name.toUpperCase()
+			openListIDs = @cache.get('open-lists') or []
 			@render()
+			@openList(id) for id in openListIDs
 
 	# Render
 	#######################################
 
 	render: () ->
 		# collection ui
-		@$el.html JST.collection(@)
-		@$collection = @$el.find('.collection')
-		@toolbar = new Toolbar(@$el.find('.toolbar'), @$footer, @)
+		@el.html JST.collection(@)
+		@collection = @el.find('.collection')
+		@toolbar = new Toolbar(@el.find('.toolbar'), @footer, @)
 
 		# lists
 		elements = _.map @openLists, (list) -> list.render()
-		@$collection.append elements
+		@collection.append elements
 
 		@bindEvents()
 
 	bindEvents: () ->
 		self = @
-		@$collection.on 'click', '.user', (e) ->
+		@collection.on 'click', '.user', (e) ->
 			$this = $(this)
 			userID = + $this.data 'id'
 			listID = + $this.closest('.list').data 'id'
 			self.select userID, listID, !(e.ctrlKey or e.metaKey), e.shiftKey
-		@$el.on 'click', '.toolbar-remove', => @removeFromList()
+		@el.on 'click', '.toolbar-remove', => @removeFromList()
 
 	# Getters / Setters
 	#######################################
@@ -88,14 +91,30 @@ class ListCollection extends EventEmitter
 		stream.ready().done =>
 			list = new List(stream)
 			@lists.push list
-			list.on 'destroy', => _.remove @lists, list
-			list.on 'hide', => _.remove @openLists, list
+			list.on 'destroy', => @removeList list.id
+			list.on 'hide', => @closeList list.id
+
+	removeList: (listID) ->
+		list = @getList listID
+		if list
+			@closeList listID
+			_.remove @lists, list
+		@
 
 	openList: (listID) ->
 		unless _.findWhere(@openLists, id: listID)
 			list = @getList listID
 			@openLists.push list
-			@$collection.append list.render()
+			@cache.set 'open-lists', _.pluck(@openLists, 'id')
+			@collection.append list.render()
+		@
+
+	closeList: (listID) ->
+		list = @getList listID
+		if list and _.findWhere(@openLists, id: listID)
+			_.remove @openLists, list
+			@cache.set 'open-lists', _.pluck(@openLists, 'id')
+		@
 
 	getUser: (userID) ->
 		@twitter.getUser userID
@@ -171,6 +190,8 @@ class ListCollection extends EventEmitter
 			list.update listChanges
 		else
 			@addList listChanges
+				.done => @openList listChanges.id
+		@
 
 	getMembershipMap: () ->
 		map = {}

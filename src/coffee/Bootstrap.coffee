@@ -11,7 +11,7 @@ class Bootstrap
 	user: null
 
 	constructor: () ->
-		@$header = $('.pline-header')
+		@header = $('.pline-header')
 		@friends = null
 		@collection = null
 
@@ -34,7 +34,7 @@ class Bootstrap
 		window.location.reload(false)
 
 	start: () ->
-		@$header
+		@header
 			.on 'click', '.btn-login', =>  
 				@twitter.connectTwitter().then => @login()
 			.on 'click', '.btn-logout', => @logout()

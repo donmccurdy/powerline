@@ -26,10 +26,12 @@ class List extends EventEmitter
 			@users = @stream.current()
 			@render()
 
-	render: () ->
+	render: (options = {}) ->
 		rows = _.map @getUsers(), (user) =>
 			JST.user(user: user, selected: @selection?.contains user.id)
-		scrollTop = @el.find('.list').scrollTop()
+		scrollTop = 0
+		if not options.unscroll
+			scrollTop = @el.find('.list').scrollTop()
 		@el.html $(JST.list(@)).children()
 			.find('.list')
 				.html rows.join('')
@@ -106,7 +108,7 @@ class List extends EventEmitter
 
 	filter: (pivot) ->
 		@pivot = pivot
-		@render()
+		@render unscroll: true
 
 	update: (metadata) ->
 		@name = metadata.name

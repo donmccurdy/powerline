@@ -37,7 +37,7 @@
 	.asg-label,
 	.asg-static-label {
 		display: table-cell;
-		padding: 5px;
+		padding: 5px 10px;
 		color: $bodyBlack;
 		vertical-align: middle;
 		&:focus,
@@ -52,6 +52,10 @@
 		text-align: center;
 		vertical-align: middle;
 		padding: 3px;
+
+		&.asg-no-img {
+			padding: 0;
+		}
 	}
 
 	.asg-img,

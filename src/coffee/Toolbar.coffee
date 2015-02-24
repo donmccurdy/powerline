@@ -23,14 +23,15 @@ class Toolbar extends EventEmitter
 			source: @findList
 
 		# list search
-		$asgSearch = @el.find('.input-list-search').asg(_.merge(asg_options,
+		$asgOpen = @el.find('.input-list-open').asg(_.merge(asg_options,
 			offsetTop: 14
 			callback: =>
-				@collection.openList asgSearch.get().key
-				asgSearch.clear()
-				$asgSearch.blur()
+				@collection.openList asgOpen.get().key
+				asgOpen.clear()
+				$asgOpen.blur()
 		))
-		asgSearch = $asgSearch.data('asg')
+		asgOpen = $asgOpen.data('asg')
+		@$asgOpen = $asgOpen
 
 		# add user to list
 		$asgAdd = @el.find('.dropdown-input[data-action=add]').asg(_.merge(asg_options,
@@ -95,9 +96,10 @@ class Toolbar extends EventEmitter
 
 	bindKeys: () ->
 		# list actions
-		@bindKey Keymap.LIST_ADD.key, (e) => @focusDropdown 'add'
-		@bindKey Keymap.LIST_MOVE.key, (e) => @focusDropdown 'move'
-		@bindKey Keymap.LIST_REMOVE.key, (e) => @collection.removeFromList()
+		@bindKey Keymap.LIST_ADD.key, => @focusDropdown 'add'
+		@bindKey Keymap.LIST_MOVE.key, => @focusDropdown 'move'
+		@bindKey Keymap.LIST_REMOVE.key, => @collection.removeFromList()
+		@bindKey Keymap.LIST_OPEN.key, => @$asgOpen.focus()
 
 		# keyboard selection
 		@bindKey Keymap.UP.key, (e) =>

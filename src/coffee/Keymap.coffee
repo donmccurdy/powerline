@@ -41,6 +41,11 @@ class Keymap
 		label: 'E'
 		key: 'e'
 
+	@LIST_OPEN:
+		action: 'Open list'
+		label: 'O'
+		key: 'o'
+
 	##############################
 	# UTILITY
 

@@ -68,7 +68,7 @@ $toolbarHeight: 37px;
 	& .input-group-btn:first-child > .btn {
 		margin-right: -2px;
 	}
-	.input-list-search:focus + .glyphicon {
+	.input-list-open:focus + .glyphicon {
 		display: none;
 	}
 }

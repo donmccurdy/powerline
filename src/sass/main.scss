@@ -134,6 +134,16 @@ $listHeaderHeight: 40px;
 	.dropdown-menu {
 		min-width: 0;
 	}
+	&.drag-target {
+		border: 5px dashed $borderLight;
+		* {
+			pointer-events: none;
+		}
+	}
+	&.dragging {
+		opacity: 0.5;
+		background: #fff;
+	}
 }
 
 .list-title {

@@ -1,4 +1,4 @@
-<section class="list-wrap">
+<section class="list-wrap" draggable="{{= id ? 'true' : 'false'}}">
 	<header class="list-title">
 		{{- pivot === 'all' ? name : 'Unlisted' }}
 		<sup>({{= count() }})</sup>

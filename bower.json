@@ -28,6 +28,7 @@
     "oauth-js": "~0.4.0",
     "asg.js": "~0.5.2",
     "mousetrap": "~1.4.6",
-    "hello": "~1.4.1"
+    "hello": "~1.4.1",
+    "jquery-sortable": "~0.9.12"
   }
 }

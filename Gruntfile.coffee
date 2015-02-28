@@ -11,6 +11,7 @@ module.exports = (grunt) ->
 		'bower_components/jquery/dist/jquery.min.js'
 		'bower_components/hello/dist/hello.all.min.js'
 		'bower_components/mousetrap/mousetrap.min.js'
+		'bower_components/jquery-sortable/source/js/jquery-sortable-min.js'
 		'bower_components/asg.js/dist/asg.min.js'
 	]
 

@@ -134,15 +134,14 @@ $listHeaderHeight: 40px;
 	.dropdown-menu {
 		min-width: 0;
 	}
-	&.drag-target {
-		border: 5px dashed $borderLight;
-		* {
-			pointer-events: none;
-		}
-	}
-	&.dragging {
+	&.dragged {
+		position: absolute;
 		opacity: 0.5;
+		z-index: 2000;
 		background: #fff;
+	}
+	&.placeholder {
+		border: 5px dashed $borderLight;
 	}
 }
 
@@ -150,7 +149,7 @@ $listHeaderHeight: 40px;
 	@extend .font-header;
 	height: $listHeaderHeight;
 	line-height: 44px;
-	padding-left: 5px;
+	padding-left: 10px;
 	position: relative;
 }
 
@@ -158,6 +157,40 @@ $listHeaderHeight: 40px;
 	overflow-y: auto;
 	height: calc(100% - #{$listHeaderHeight});
 	margin: 0;
+}
+
+/* List Sorting
+*********************************/
+
+body.dragging,
+body.dragging * {
+  cursor: ew-resize !important;
+}
+
+.list-wrap .handle {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	margin-right: -5px;
+	position: relative;
+	cursor: ew-resize;
+
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		height: 100%;
+		border-left: 1px solid $borderDark;
+		border-right: 1px solid $borderDark;
+	}
+	&:after {
+		left: 0px;
+		width: 10px;
+	}
+	&:before {
+		left: 3px;
+		width: 4px;
+	}
 }
 
 /* List Form

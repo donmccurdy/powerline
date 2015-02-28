@@ -20,6 +20,7 @@ class List extends EventEmitter
 		@usersRemoved = []
 		@selection = null
 		@isMutable = !!@id
+		@isSortable = !!@id
 		@el = $(JST.list(@))
 		@bindEvents()
 		@stream.on 'load', =>
@@ -61,24 +62,6 @@ class List extends EventEmitter
 				.fail => console.log "could not delete list #{@id}"
 		@el.on 'click', '.list-filter', (e) =>
 			@filter $(e.target).data('pivot')
-
-		# drag events
-		@el.on 'dragstart', ->
-			$(this).addClass 'dragging'
-		@el.on 'dragend', ->
-			$(this).removeClass 'dragging'
-		@el.on 'dragenter', (e) ->
-			$(this).addClass 'drag-target'
-		@el.on 'dragover', (e) ->
-			e.preventDefault()
-			e.originalEvent.dataTransfer.dropEffect = 'move'
-		@el.on 'dragleave', ->
-			console.log 'dragleave'
-			$(this).removeClass 'drag-target'
-		@el.on 'drop', (e) ->
-			e.stopPropagation()
-			debugger
-
 		@
 
 	count: () ->

@@ -1,5 +1,6 @@
-<section class="list-wrap" draggable="{{= id ? 'true' : 'false'}}">
+<section class="list-wrap" {{= isSortable ? 'sortable' : ''}}>
 	<header class="list-title">
+		{{ if (isSortable) { }}<span class="handle"></span>{{ } }}
 		{{- pivot === 'all' ? name : 'Unlisted' }}
 		<sup>({{= count() }})</sup>
 		<ul class="nav nav-pills">

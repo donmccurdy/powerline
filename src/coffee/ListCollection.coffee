@@ -73,12 +73,23 @@ class ListCollection extends EventEmitter
 
 	bindEvents: () ->
 		self = @
+
 		@collection.on 'click', '.user', (e) ->
 			$this = $(this)
 			userID = + $this.data 'id'
 			listID = + $this.closest('.list').data 'id'
 			self.select userID, listID, !(e.ctrlKey or e.metaKey), e.shiftKey
+
 		@el.on 'click', '.toolbar-remove', => @removeFromList()
+
+		@collection.sortable
+			vertical: false
+			handle: '.handle'
+			itemSelector: 'section[sortable]'
+			placeholder: '<section class="list-wrap placeholder"/>'
+			onDrop: ($item, container, _super) =>
+				_super($item, container)
+				@updateListOrder()
 
 	# Getters / Setters
 	#######################################
@@ -105,7 +116,7 @@ class ListCollection extends EventEmitter
 		unless _.findWhere(@openLists, id: listID)
 			list = @getList listID
 			@openLists.push list
-			@cache.set 'open-lists', _.pluck(@openLists, 'id')
+			@cacheState()
 			@collection.append list.render()
 		@
 
@@ -113,7 +124,7 @@ class ListCollection extends EventEmitter
 		list = @getList listID
 		if list and _.findWhere(@openLists, id: listID)
 			_.remove @openLists, list
-			@cache.set 'open-lists', _.pluck(@openLists, 'id')
+			@cacheState()
 		@
 
 	getUser: (userID) ->
@@ -193,6 +204,15 @@ class ListCollection extends EventEmitter
 				.done => @openList listChanges.id
 		@
 
+	updateListOrder: () ->
+		ids = []
+		@collection.children().each ->
+			ids.push $(this).find('.list').data('id')
+		@openLists.length = 0
+		@openLists = _.map ids, (id) => @getList id
+		@cacheState()
+		@
+
 	getMembershipMap: () ->
 		map = {}
 		for list in @lists
@@ -200,6 +220,9 @@ class ListCollection extends EventEmitter
 			for user in list.getUsers()
 				map[user.id] = true
 		map
+
+	cacheState: () ->
+		@cache.set 'open-lists', _.pluck(@openLists, 'id')
 
 	# Debugging
 	#######################################

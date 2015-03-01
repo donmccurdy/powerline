@@ -4,6 +4,13 @@
 #
 class Cache
 
+	@instance: null
+
+	@create: (userID) ->
+		unless @instance
+			@instance = new Cache(userID)
+		@instance
+
 	constructor: (@userID) ->
 		@cache = JSON.parse(localStorage.getItem @getBin())
 		date = new Date().toLocaleDateString()

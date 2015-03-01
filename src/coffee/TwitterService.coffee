@@ -23,7 +23,7 @@ class TwitterService extends EventEmitter
 
 	init: ->
 		uid = @twitter.getAuthResponse().user_id
-		@cache = new Cache(uid)
+		@cache = Cache.create uid
 		@trigger 'ready'
 
 	isReady: ->

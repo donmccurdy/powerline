@@ -19,25 +19,27 @@ class ListCollection extends EventEmitter
 		@collection = null
 		@user = user
 		@twitter = twitter
-		@cache = new Cache(@user.id)
+		@cache = Cache.create @user.id
 		@toolbar = null
 		@selection = null
 		@lists = []
 		@openLists = []
 		@commandQueue = new CommandQueue(@)
-		@init()
+		_.defer => @init()
 
 	init: () ->
+		hasLists = $.Deferred()
+		hasFriends = $.Deferred()
+
 		# Lists
-		list_metadata = []
-		has_lists = $.Deferred()
 		@twitter.getLists().done (data) =>
+			waiting = []
 			for metadata in data.lists
-				@addList metadata
-			has_lists.resolve()
+				waiting.push @addList(metadata)
+			$.when.apply($, waiting).done ->
+				hasLists.resolve()
 		
 		# Following
-		has_friends = $.Deferred()
 		metadata =
 			name: 'Following'
 			member_count: @user.friends_count
@@ -47,10 +49,10 @@ class ListCollection extends EventEmitter
 			list.setCollection @
 			@lists.unshift list
 			@openLists.unshift list
-			has_friends.resolve()
+			hasFriends.resolve()
 
 		# Render
-		$.when(has_lists, has_friends).done =>
+		$.when(hasLists, hasFriends).done =>
 			@lists = _.sortBy @lists, (l) -> l.name.toUpperCase()
 			openListIDs = @cache.get('open-lists') or []
 			@render()
@@ -115,9 +117,12 @@ class ListCollection extends EventEmitter
 	openList: (listID) ->
 		unless _.findWhere(@openLists, id: listID)
 			list = @getList listID
-			@openLists.push list
-			@cacheState()
-			@collection.append list.render()
+			if list
+				@openLists.push list
+				@cacheState()
+				@collection.append list.render()
+			else
+				console.error "Unable to find list #{listID}"
 		@
 
 	closeList: (listID) ->

@@ -16,7 +16,7 @@ class Bootstrap
 		@collection = null
 
 	login: () ->
-		@twitter = new TwitterService()
+		@twitter = new TwitterService(Config.CLIENT_ID, Config.OAUTH_PROXY)
 		if @twitter.isReady()
 			@twitter.getCurrentUser().done (user) => @init user
 		@render()

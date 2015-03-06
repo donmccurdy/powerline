@@ -3,7 +3,7 @@ path = require 'path'
 
 module.exports = (grunt) ->
 
-	grunt.template.addDelimiters('handlebars', '{{', '}}')
+	grunt.template.addDelimiters 'handlebars', '{{', '}}'
 
 	vendor_scripts = [
 		'node_modules/lodash/dist/lodash.min.js'
@@ -53,6 +53,7 @@ module.exports = (grunt) ->
 
 		env:
 			dev:
+				src: ['.env']
 				NODE_ENV: 'DEVELOPMENT'
 			prod:
 				NODE_ENV: 'PRODUCTION'
@@ -122,7 +123,7 @@ module.exports = (grunt) ->
 				dest: "<%= build_dir %>/index.html"
 				options:
 					process: (content) ->
-						grunt.template.process(content, delimiters: 'handlebars')
+						grunt.template.process content, delimiters: 'handlebars'
 			dev:
 				expand: true
 				flatten: true
@@ -201,9 +202,9 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-bump'
 	grunt.loadNpmTasks 'grunt-env'
 
-	grunt.registerTask('common', ['clean', 'copy:main', 'copy:vendor', 'jst', 'sass'])
-	grunt.registerTask('dev', ['env:dev', 'common', 'copy:dev', 'coffee:dev', 'connect', 'watch'])
-	grunt.registerTask('prod', ['env:prod', 'common', 'coffee:dist', 'uglify'])
-	grunt.registerTask('default', ['prod'])
+	grunt.registerTask 'common', ['clean', 'copy:main', 'copy:vendor', 'jst', 'sass']
+	grunt.registerTask 'dev', ['env:dev', 'common', 'copy:dev', 'coffee:dev', 'connect', 'watch']
+	grunt.registerTask 'prod', ['env:prod', 'common', 'coffee:dist', 'uglify']
+	grunt.registerTask 'default', ['prod']
 
 	null

@@ -16,8 +16,8 @@ class TwitterService extends EventEmitter
 	# Login / Initialization
 	#######################################
 
-	constructor: ->
-		hello.init twitter: 'EZIGSwadFs8Z23g35SXUYDri1'
+	constructor: (clientID, oauthProxy) ->
+		hello.init {twitter: clientID}, {oauth_proxy: oauthProxy}
 		@twitter = hello 'twitter'
 		if @isReady() then @init()
 

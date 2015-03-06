@@ -119,6 +119,9 @@
 		<!-- templates -->
 		<script src="./assets/js/templates.js"></script>
 
+		<!-- config -->
+		<script>var Config={CLIENT_ID:'{{= process.env.CLIENT_ID }}',OAUTH_PROXY:'{{= process.env.OAUTH_PROXY }}'};</script>
+
 		<!-- application scripts -->
 		{{ if (process.env.NODE_ENV === 'DEVELOPMENT') { }}
 			{{ _.forEach(dev_scripts, function (script) { }}

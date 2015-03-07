@@ -127,6 +127,17 @@
 			{{ _.forEach(dev_scripts, function (script) { }}
 			<script src="./assets/js/.tmp/{{= script }}.js"></script>
 			{{ }) }}
+			<script>
+				(function (MemoryStats) {
+					var stats = new MemoryStats();
+					stats.domElement.classList.add('memory-stats');
+					document.body.appendChild( stats.domElement );
+					window.requestAnimationFrame(function rAFloop(){
+						stats.update();
+						window.requestAnimationFrame(rAFloop);
+					});
+				}(window.MemoryStats));
+			</script>
 		{{ } else { }}
 			<script src="./assets/js/powerline.min.js"></script>
 		{{ } }}

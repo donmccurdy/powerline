@@ -30,8 +30,5 @@
     "mousetrap": "~1.4.6",
     "hello": "~1.4.1",
     "jquery-sortable": "~0.9.12"
-  },
-  "devDependencies": {
-    "memory-stats": "*"
   }
 }

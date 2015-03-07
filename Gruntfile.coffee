@@ -13,9 +13,6 @@ module.exports = (grunt) ->
 		'bower_components/mousetrap/mousetrap.min.js'
 		'bower_components/jquery-sortable/source/js/jquery-sortable-min.js'
 		'bower_components/asg.js/dist/asg.min.js'
-
-		# DEV ONLY (todo)
-		'bower_components/memory-stats/memory-stats.js'
 	]
 
 	grunt.initConfig(

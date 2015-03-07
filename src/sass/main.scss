@@ -257,3 +257,11 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 	float: left;
 	margin-right: 10px;
 }
+
+/* Generic Modal
+*********************************/
+
+.modal-footer,
+.modal-header {
+	border: none;
+}

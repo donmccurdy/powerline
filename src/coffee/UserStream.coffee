@@ -58,4 +58,13 @@ class UserStream extends EventEmitter
 		@users.length
 
 	remove: () ->
-		@twitter.removeList @id
+		deferred = $.Deferred()
+		el = $(JST['modal'](content: JST['list-remove'](@))).modal
+			backdrop: true
+			keyboard: true
+			show: true
+		el.on 'hidden.bs.modal', -> deferred.reject()
+		el.on 'click', '.btn-remove', =>
+			@twitter.removeList @id
+			deferred.resolve()
+		deferred

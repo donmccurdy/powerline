@@ -153,6 +153,10 @@ $listHeaderHeight: 40px;
 	position: relative;
 }
 
+.list-title-inline {
+	font-weight: bold;
+}
+
 .list {
 	overflow-y: auto;
 	height: calc(100% - #{$listHeaderHeight});

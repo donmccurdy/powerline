@@ -115,3 +115,6 @@ class Toolbar extends EventEmitter
 
 		# user details
 		@bindKey Keymap.SHOW_DETAILS.key, (e) => @collection.showDetails()
+
+		# blur inputs on escape
+		$('input').keyup (e) -> $(this).blur() if e.keyCode is 27

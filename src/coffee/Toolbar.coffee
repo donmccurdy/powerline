@@ -8,11 +8,13 @@ class Toolbar extends EventEmitter
 		@lists = lists
 
 	focusDropdown: (action) ->
-		$menu = @el.find(".dropdown-menu[data-action=#{action}]")
-			.addClass 'focus'
-		$menu.find '.dropdown-input'
-			.focus()
-			.one 'blur', -> _.delay (-> $menu.removeClass 'focus'), 200
+		$btn = @el.find ".btn[data-action=#{action}]"
+		unless $btn.prop 'disabled'
+			$menu = @el.find ".dropdown-menu[data-action=#{action}]"
+				.addClass 'focus'
+			$menu.find '.dropdown-input'
+				.focus()
+				.one 'blur', -> _.delay (-> $menu.removeClass 'focus'), 200
 
 	bindEvents: () ->
 		self = @

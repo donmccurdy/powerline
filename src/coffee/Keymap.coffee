@@ -42,9 +42,9 @@ class Keymap
 		key: 'e'
 
 	@LIST_OPEN:
-		action: 'Open list'
-		label: 'O'
-		key: 'o'
+		action: 'Goto list'
+		label: 'G'
+		key: 'g'
 
 	##############################
 	# UTILITY

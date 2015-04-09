@@ -14,7 +14,7 @@ class Toolbar extends EventEmitter
 				.addClass 'focus'
 			$menu.find '.dropdown-input'
 				.focus()
-				.one 'blur', -> _.delay (-> $menu.removeClass 'focus'), 200
+				.one 'blur', -> $menu.removeClass 'focus'
 
 	bindEvents: () ->
 		self = @
@@ -23,6 +23,7 @@ class Toolbar extends EventEmitter
 			minChars: 0
 			numToSuggest: 100
 			source: @findList
+			clickEvent: 'mousedown'
 
 		# list search
 		$asgOpen = @el.find('.input-list-open').asg(_.merge(asg_options,
@@ -117,4 +118,4 @@ class Toolbar extends EventEmitter
 		@bindKey Keymap.SHOW_DETAILS.key, (e) => @collection.showDetails()
 
 		# blur inputs on escape
-		$('input').keyup (e) -> $(this).blur() if e.keyCode is 27
+		$('input').keydown (e) -> $(this).blur() if e.keyCode is 27

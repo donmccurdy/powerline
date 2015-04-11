@@ -252,9 +252,28 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 /* User Detail Modal
 *********************************/
 
+.user-detail-header.row {
+	margin: 0;
+	width: 100%;
+}
+
+.user-detail-header-cell {
+	display: inline-block;
+	vertical-align: top;
+	max-width: 49%;
+}
+
 .user-detail-img-wrap {
 	float: left;
 	margin-right: 10px;
+}
+
+.user-detail-body {
+	clear: both;
+}
+
+.user-description {
+	font-weight: normal;
 }
 
 /* Generic Modal

@@ -181,6 +181,7 @@ class ListCollection extends EventEmitter
 	showDetails: () ->
 		if @selection.count() is 1
 			user = @getUser @selection.get()[0]
+			user.thumbnail = user.thumbnail.replace('_normal.', '.');
 			$(JST['modal'](content: JST['user-detail'](user))).modal
 				backdrop: true
 				keyboard: true

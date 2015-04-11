@@ -1,16 +1,21 @@
 
 <div class="modal-header">
 	<h4 class="modal-title">
-		<div class="user-detail-img-wrap">
-			<img src="{{= thumbnail }}" alt="{{- name }} profile image" class="img-thumbnail">
+		<div class="user-detail-header row">
+			<div class="user-detail-header-cell">
+				<div class="user-detail-img-wrap">
+					<img src="{{= thumbnail }}" alt="{{- name }} profile image" class="img-thumbnail">
+				</div>
+			</div>
+			<div class="user-detail-header-cell">
+				<div class="user-name">{{- name }}</div>
+				<div class="user-screen-name">@{{- screen_name }}</div>
+				<p class="user-description">{{- description }}</p>
+			</div>
 		</div>
-		<div>{{- name }}</div>
-		<div class="user-screen-name">@{{- screen_name }}</div>
 	</h4>
 </div>
-<div class="modal-body">
-
-	<p class="user-description">{{- description }}</p>
+<div class="modal-body user-detail-body">
 
 	<ul class="list-group">
 		{{ if (url) { }}

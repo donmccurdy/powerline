@@ -111,8 +111,12 @@ class Toolbar extends EventEmitter
 		@bindKey Keymap.DOWN.key, (e) =>
 			if e.shiftKey then @collection.selection?.incrRange()
 			else @collection.selection?.incr()
-		@bindKey Keymap.LEFT.key, (e) => console.log Keymap.LEFT.action
-		@bindKey Keymap.RIGHT.key, (e) => console.log Keymap.RIGHT.action
+		@bindKey Keymap.LEFT.key, (e) =>
+			if e.shiftKey then @collection.moveLeft()
+			else @collection.selectLeft()
+		@bindKey Keymap.RIGHT.key, (e) =>
+			if e.shiftKey then @collection.moveRight()
+			else @collection.selectRight()
 
 		# user details
 		@bindKey Keymap.SHOW_DETAILS.key, (e) => @collection.showDetails()

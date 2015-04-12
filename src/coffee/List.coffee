@@ -134,4 +134,7 @@ class List extends EventEmitter
 		console.groupEnd()
 
 	contains: (user) ->
-		_.any(@users, id: user.id) or _.any(@usersAdded, id: user.id)
+		if _.any(@usersRemoved, id: user.id) then return false
+		if _.any(@users, id: user.id) then return true
+		if _.any(@usersAdded, id: user.id) then return true
+		false

@@ -150,13 +150,35 @@ class ListCollection extends EventEmitter
 				@selection.set userID, reset
 			else
 				@selection?.destroy()
-				@selection = new Selection(list)
-				@selection.on 'change', => @trigger 'select'
-				@selection.on 'destroy', =>
-					@selection = null
-					@trigger 'select'
+				@setSelection(new Selection(list))
 				@selection.set userID
 		@
+
+	setSelection: (selection) ->
+		@selection = selection
+		@selection.on 'change', => @trigger 'select'
+		@selection.on 'destroy', =>
+			@selection = null
+			@trigger 'select'
+
+	selectRight: (offset = 1) ->
+		@
+
+	selectLeft: () ->
+		@selectRight -1
+
+	moveRight: (offset = 1) ->
+		unless @selection then return
+		targetIndex = offset + _.findIndex @openLists, id: @selection.listID
+		list = @openLists[targetIndex]
+		if list
+			userIDs = @selection.get()
+			@moveToList list.id
+			@setSelection(new Selection(list))
+			@selection.set userID for userID in userIDs
+
+	moveLeft: () ->
+		@moveRight -1
 
 	moveToList: (listID) ->
 		if @selection

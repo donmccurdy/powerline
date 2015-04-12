@@ -84,6 +84,19 @@ class Selection extends EventEmitter
 				users.push user
 		_.pluck users, 'id'
 
+	# Return index of anchor user. Useful
+	# 	when moving cursor left/right 
+	# 	between lists.
+	getAnchorIndex: () ->
+		_.findIndex @list.getUsers(), id: @anchorID
+
+	# Select the user at the specified index,
+	# 	and remove all other selections.
+	setAnchorIndex: (index) ->
+		users = @list.getUsers()
+		if index < users.length then @set users[index].id
+		else @set _.last(users).id
+
 	count: () ->
 		_.size @userIDs
 

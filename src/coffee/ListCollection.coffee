@@ -162,7 +162,14 @@ class ListCollection extends EventEmitter
 			@trigger 'select'
 
 	selectRight: (offset = 1) ->
-		@
+		unless @selection then return
+		targetIndex = offset + _.findIndex @openLists, id: @selection.listID
+		list = @openLists[targetIndex]
+		if list
+			index = @selection.getAnchorIndex()
+			@selection.destroy()
+			@setSelection(new Selection(list))
+			@selection.setAnchorIndex index
 
 	selectLeft: () ->
 		@selectRight -1

@@ -270,6 +270,10 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 
 .user-detail-body {
 	clear: both;
+
+	.list-group {
+		margin-bottom: 0;
+	}
 }
 
 .user-description {
@@ -282,4 +286,9 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 .modal-footer,
 .modal-header {
 	border: none;
+}
+
+.modal-body {
+	padding-bottom: 0;
+	.alert { margin-bottom: 0; }
 }

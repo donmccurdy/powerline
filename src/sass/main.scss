@@ -229,6 +229,12 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 		border-left: 2px solid $accent;
 		padding-left: 3px;
 	}
+	&.unsaved {
+		background: $accentNew;
+		&.selected {
+			background: desaturate(darken($accentNew, 5%), 20%);
+		}
+	}
 	.glyphicon {
 		font-size: .8em;
 		top: 0;

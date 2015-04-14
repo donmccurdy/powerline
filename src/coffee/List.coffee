@@ -32,8 +32,13 @@ class List extends EventEmitter
 			@render()
 
 	render: (options = {}) ->
+		unsavedIDs = _.invert _.pluck(@usersAdded, 'id')
 		rows = _.map @getUsers(), (user) =>
-			JST.user(user: user, selected: @selection?.contains user.id)
+			JST.user
+				user: user
+				selected: @selection?.contains user.id
+				unsaved: !!unsavedIDs[user.id]
+
 		scrollTop = 0
 		if not options.unscroll
 			scrollTop = @el.find('.list').scrollTop()

@@ -1,4 +1,4 @@
-<div class="user" data-id={{= user.id }}>
+<div class="user {{= unsaved ? 'unsaved' : '' }}" data-id={{= user.id }}>
 	<div class="user-image-wrap">
 		<img class="user-image" src="{{= user.profile_image_url_https }}" alt="{{- user.name }} profile picture">
 	</div>

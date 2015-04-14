@@ -9,20 +9,24 @@
 #
 class List extends EventEmitter
 
-	constructor: (@stream) ->
+	constructor: (@stream, @cache) ->
 		@id = +@stream.id
 		@name = @stream.name
 		@mode = @stream.mode
 		@description = @stream.description
 		@users = @stream.current()
-		@pivot = 'all'
 		@usersAdded = []
 		@usersRemoved = []
 		@selection = null
 		@isMutable = !!@id
 		@isSortable = !!@id
+
+		@pivot = @cache.get("list-filter-#{@id}") or 'all'
+
 		@el = $(JST.list(@))
 		@bindEvents()
+		@filter @pivot if @pivot isnt 'all'
+
 		@stream.on 'load', =>
 			@users = @stream.current()
 			@render()
@@ -109,6 +113,7 @@ class List extends EventEmitter
 
 	filter: (pivot) ->
 		@pivot = pivot
+		@cache.set "list-filter-#{@id}", @pivot
 		@render unscroll: true
 
 	update: (metadata) ->

@@ -45,7 +45,7 @@ class ListCollection extends EventEmitter
 			member_count: @user.friends_count
 		stream = new UserStream(0, metadata, @twitter)
 		stream.ready().done =>
-			list = new List(stream)
+			list = new List(stream, @cache)
 			list.setCollection @
 			@lists.unshift list
 			@openLists.unshift list
@@ -102,7 +102,7 @@ class ListCollection extends EventEmitter
 	addList: (metadata) ->
 		stream = new UserStream(metadata.id, metadata, @twitter)
 		stream.ready().done =>
-			list = new List(stream)
+			list = new List(stream, @cache)
 			@lists.push list
 			list.on 'destroy', => @removeList list.id
 			list.on 'hide', => @closeList list.id

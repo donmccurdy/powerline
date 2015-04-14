@@ -261,6 +261,10 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 .user-detail-header.row {
 	margin: 0;
 	width: 100%;
+
+	.user-name {
+		margin-bottom: 0;
+	}
 }
 
 .user-detail-header-cell {
@@ -283,7 +287,7 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 }
 
 .user-description {
-	font-weight: normal;
+	margin-top: 10px;
 }
 
 /* Generic Modal

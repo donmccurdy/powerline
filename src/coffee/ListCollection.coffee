@@ -208,10 +208,13 @@ class ListCollection extends EventEmitter
 			@trigger 'change'
 
 	showDetails: () ->
-		if @selection.count() is 1
+		if @userModal
+			@userModal.modal 'hide'
+			@userModal = null
+		else if @selection.count() is 1
 			user = @getUser @selection.get()[0]
 			user.thumbnail = user.thumbnail.replace('_normal.', '.');
-			$(JST['modal'](content: JST['user-detail'](user))).modal
+			@userModal = $(JST['modal'](content: JST['user-detail'](user))).modal
 				backdrop: true
 				keyboard: true
 				show: true

@@ -275,6 +275,7 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 
 .user-detail-img-wrap {
 	float: left;
+	width: 100%;
 	margin-right: 10px;
 }
 
@@ -292,6 +293,12 @@ input[type=radio]:not(:checked) ~ .glyphicon {
 
 /* Generic Modal
 *********************************/
+
+// Nice Gaussian effect, but too slow on current Chrome:
+// body.modal-open > .container {
+// 	-webkit-filter: blur(2px);
+// 	filter: blur(2px);
+// }
 
 .modal-footer,
 .modal-header {

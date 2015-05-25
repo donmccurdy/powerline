@@ -8,23 +8,20 @@ class UserStream extends EventEmitter
 		@mode = @metadata.mode
 		@description = @metadata.description
 		@isReady = $.Deferred()
-		@reload @isReady, false
+		@reload(false).then => @isReady.resolve()
 
-
-	reload: (deferred, noCache = true) ->
+	reload: (noCache = true) ->
 		@remoteCursor = -1
 		if @id is 0
 			resource = @twitter.getFriends @remoteCursor, noCache
 		else
 			resource = @twitter.getListMembers @id, @remoteCursor, noCache
-
 		resource
-			.done (data) =>
+			.then (data) =>
 				@remoteCursor = data.next_cursor
 				@users = data.users
-				deferred?.resolve @users
 				@preload noCache
-			.fail => deferred?.reject 'could not connect stream'
+				data
 
 	preload: (noCache) ->
 		if not @remoteCursor
@@ -34,12 +31,11 @@ class UserStream extends EventEmitter
 		else
 			resource = @twitter.getListMembers @id, @remoteCursor, noCache
 
-		resource
-			.done (data) =>
-				@remoteCursor = data.next_cursor
-				@users = @users.concat data.users
-				@preload noCache
-				@trigger 'load'
+		resource.then (data) =>
+			@remoteCursor = data.next_cursor
+			@users = @users.concat data.users
+			@preload noCache
+			@trigger 'load'
 		@
 
 	ready: () ->
@@ -67,4 +63,4 @@ class UserStream extends EventEmitter
 		el.on 'click', '.btn-remove', =>
 			@twitter.removeList @id
 			deferred.resolve()
-		deferred
+		deferred.promise

@@ -18,7 +18,7 @@ class Bootstrap
 	login: () ->
 		@twitter = new TwitterService(Config.CLIENT_ID, Config.OAUTH_PROXY)
 		if @twitter.isReady()
-			@twitter.getCurrentUser().done (user) => @init user
+			@twitter.getCurrentUser().then (user) => @init user
 		@render()
 
 	init: (user) ->

@@ -27,12 +27,12 @@ class CommandQueue
 	save: () ->
 		changes = new CommandAggregator(@collection.twitter, @undoQueue)
 		changes.apply()
-			.done =>
+			.then =>
 				@finalized = @undoQueue
 				@undoQueue = []
 				@redoQueue = []
 				@reload(changes.getListIDs())
-			.fail ->
+			.catch ->
 				console.log "Could not save changes"
 				console.log arguments
 

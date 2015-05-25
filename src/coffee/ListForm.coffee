@@ -30,12 +30,12 @@ class ListForm extends EventEmitter
 		@metadata.mode = @el.find('input[name=mode]:checked').val()
 		if @validate()
 			@twitter.upsertList @metadata
-				.done (list) =>
+				.then (list) =>
 					@trigger 'save', list
 					@close()
-				.fail => @el.addClass 'exception'
+				.catch => @el.addClass 'exception'
 		else
-			$.Deferred().reject()
+			Promise.reject()
 
 	validate: () ->
 		unless @metadata.name

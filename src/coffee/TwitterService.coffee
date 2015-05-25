@@ -30,16 +30,10 @@ class TwitterService extends EventEmitter
 		!!@twitter.getAuthResponse()
 
 	connectTwitter: ->
-		deferred = $.Deferred()
-		@twitter.login().then(
-			(r) =>
+		@twitter.login().then =>
 				@init()
-				deferred.resolve()
+				# resolved here ... (?)
 				@trigger 'ready'
-			(r) =>
-				deferred.reject r
-		)
-		deferred
 
 	logout: ->
 		@twitter.logout()
@@ -49,7 +43,6 @@ class TwitterService extends EventEmitter
 	#######################################
 
 	request: (path, data, method) ->
-		deferred = $.Deferred()
 		params = ''
 		if data
 			# doing this for *both* GET+POST requests because
@@ -57,17 +50,17 @@ class TwitterService extends EventEmitter
 			params = '?' + $.param data
 		if method is 'get'
 			data = {}
-		@twitter.api path + params, method, data
-			.then(
-				(data) ->
-					if data?.errors
-						deferred.reject data
-					else
-						deferred.resolve data
-				(data) ->
-					deferred.reject data
-			)
-		deferred
+		promise = new Promise((resolve, reject) ->
+			@twitter.api path + params, method, data
+			.then (data) ->
+				if data?.errors
+					reject data
+				else
+					resolve data
+			.catch (data) -> 
+				reject data
+		)
+		promise
 
 	get: (path, data) ->
 		@request path, data, 'get'
@@ -81,7 +74,7 @@ class TwitterService extends EventEmitter
 	getCurrentUser: ->
 		@cache.bind 'current-user', () =>
 				@get 'me'
-			.done (data) => @cacheUsers [data]
+			.then (data) => @cacheUsers [data]
 
 	getUser: (userID) ->
 		if @users[userID]
@@ -104,7 +97,7 @@ class TwitterService extends EventEmitter
 					cursor: cursor
 					skip_status: true
 					include_user_entities: false
-			.done (data) => @cacheUsers data.users
+			.then (data) => @cacheUsers data.users
 
 	getLists: (clear = false) ->
 		if clear then @cache.clear 'lists'
@@ -120,7 +113,7 @@ class TwitterService extends EventEmitter
 					cursor: cursor
 					skip_status: true
 					include_entities: false
-			.done (data) => @cacheUsers data.users
+			.then (data) => @cacheUsers data.users
 
 	addListMembers: (listID, userIDs) ->
 		@post '/lists/members/create_all.json',

@@ -40,7 +40,6 @@ class Cache
 
 	bind: (key, fetch) ->		
 		if data = @get(key)
-			deferred = $.Deferred().resolve data
+			Promise.resolve data
 		else
-			fetch().done (data) =>
-				@set(key, data)
+			fetch().then (data) => @set(key, data)

@@ -28,31 +28,24 @@ class ListCollection extends EventEmitter
 		_.defer => @init()
 
 	init: () ->
-		hasLists = $.Deferred()
-		hasFriends = $.Deferred()
-
 		# Lists
-		@twitter.getLists().done (data) =>
-			waiting = []
-			for metadata in data.lists
-				waiting.push @addList(metadata)
-			$.when.apply($, waiting).done ->
-				hasLists.resolve()
+		hasLists = @twitter.getLists().then (data) =>
+			waiting = @addList(metadata) for metadata in data.lists
+			Promise.all waiting
 		
 		# Following
 		metadata =
 			name: 'Following'
 			member_count: @user.friends_count
 		stream = new UserStream(0, metadata, @twitter)
-		stream.ready().done =>
+		hasFriends = stream.ready().then =>
 			list = new List(stream, @cache)
 			list.setCollection @
 			@lists.unshift list
 			@openLists.unshift list
-			hasFriends.resolve()
 
 		# Render
-		$.when(hasLists, hasFriends).done =>
+		Promise.all([hasLists, hasFriends]).then =>
 			@lists = _.sortBy @lists, (l) -> l.name.toUpperCase()
 			openListIDs = @cache.get('open-lists') or []
 			@render()
@@ -101,7 +94,7 @@ class ListCollection extends EventEmitter
 
 	addList: (metadata) ->
 		stream = new UserStream(metadata.id, metadata, @twitter)
-		stream.ready().done =>
+		stream.ready().then =>
 			list = new List(stream, @cache)
 			@lists.push list
 			list.on 'destroy', => @removeList list.id
@@ -239,7 +232,7 @@ class ListCollection extends EventEmitter
 			list.update listChanges
 		else
 			@addList listChanges
-				.done => @openList listChanges.id
+				.then => @openList listChanges.id
 		@
 
 	updateListOrder: () ->

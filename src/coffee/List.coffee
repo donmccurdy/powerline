@@ -67,8 +67,8 @@ class List extends EventEmitter
 			@el.detach()
 		@el.on 'click', '.list-remove', =>
 			@stream.remove()
-				.done => @destroy()
-				.fail => console.log "could not delete list #{@id}"
+				.then => @destroy()
+				.catch => console.log "could not delete list #{@id}"
 		@el.on 'click', '.list-filter', (e) =>
 			@filter $(e.target).data('pivot')
 		@
@@ -108,13 +108,11 @@ class List extends EventEmitter
 		@
 
 	reload: () ->
-		deferred = $.Deferred().done =>
+		@stream.reload().then =>
 			@users = @stream.current()
 			@usersAdded = []
 			@usersRemoved = []
 			@render()
-		@stream.reload(deferred)
-		deferred
 
 	filter: (pivot) ->
 		@pivot = pivot
